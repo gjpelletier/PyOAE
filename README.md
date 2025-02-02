@@ -39,7 +39,7 @@ import numpy as np
 ```
 
 Next we will analyze a simple example of data from a single model grid cell
-'''
+```
 # import the packages that are needed
 import scipy.optimize as opt
 import numpy as np
@@ -65,6 +65,6 @@ f_x = lambda x: f_dTA(x, **kwargs)
 # use brentq to find the root of dTA that results in OAE treated condtions equal to pre-industrial
 root = opt.brentq(f_x, x_upr, x_lwr)
 print("The dTA needed for restoration to pre-industrial conditions is %.2f umol/kg" % (root))
-'''
+```
 
 
