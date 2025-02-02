@@ -61,7 +61,7 @@ kwargs = {
   'cdreff': cdreff
   }
 # make the lambda function that will be used to allow brentq to use the kwargs for f_dTA
-f_x = lambda x: f_dTA(x, **kwargs)
+f_x = lambda x: f_dTA(x, kwargs)
 # use brentq to find the root of dTA that results in OAE treated condtions equal to pre-industrial
 root = opt.brentq(f_x, x_upr, x_lwr)
 print("The dTA needed for restoration to pre-industrial conditions is %.2f umol/kg" % (root))
