@@ -11,6 +11,7 @@ Tools and examples for using Python and Jupyter for analysis of Ocean Alkalinity
 
 EXAMPLE 1 - use of f_dTA function for root-finding to process one value at a time
 
+"""
 import scipy.optimize as opt
 import numpy as np
 from PyOAE import f_dTA
@@ -31,9 +32,11 @@ kwargs = {
 f_x = lambda x: f_dTA(x, **kwargs)
 root = opt.brentq(f_x, x_upr, x_lwr)
 print("The dTA needed for restoration to pre-industrial conditions is %.2f umol/kg" % (root))
+"""
 
 EXAMPLE 2 - use of etamax function to process arrays of any shape
 
+"""
 import numpy as np
 from PyOAE import etamax
 dTA = 1   # lower bound of the range of dTA values (umol/kg) to search for the root
@@ -46,6 +49,6 @@ Sal = 34.004
 Pres = 0
 result = etamax(dTA, TA, DIC, SiO3, PO4, Temp, Sal, Pres)
 result
-
+"""
 
 
