@@ -17,7 +17,7 @@ First install the new functions as follows with pip or !pip in your notebook or 
 pip install git+https://github.com/gjpelletier/PyOAE.git
 ```
 
-Next import the delta_method and parametric_bootstrap functions as follows in your notebook or python code:<br>
+Next import the f_dTA and etamax functions as follows in your notebook or python code:<br>
 ```
 from PyOAE import f_dTA, etamax
 ```
