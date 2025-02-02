@@ -47,7 +47,9 @@ from PyOAE import f_dTA
 # assign the inputs that are needed
 x_upr = 0   # lower bound of the range of dTA values (umol/kg) to search for the root
 x_lwr = 500 # upper bound of the range of dTA values (umol/kg) to search for the root
+# specify the pre-industrial TA, DIC, SiO3, PO4, temp, sal, and pres
 chem_pi = np.array([2232,1861,1.346,0.201,26.683,34.004,0])    # TA, DIC, SiO3, PO4, temp, sal, pres for PI
+# specify the control conditions at time t before OAE for TA, DIC, SiO3, PO4, temp, sal, and pres
 chem_ctl = np.array([2230,1915,1.346,0.201,27.391,33.914,0])   # TA, DIC, SiO3, PO4, temp, sal, pres for control
 oae_type = 'NaOH'     # 'NaOH' or 'Na2CO3'
 obj_var = 'alkstar'   # 'alkstar', 'co3', 'omara', 'omcal', or 'phtot'
