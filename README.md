@@ -10,7 +10,7 @@ Tools for analysis of Ocean Alkalinity Enhancement, including Jupyter Notebooks 
 
 The PyOAE package requires that you have already installed numpy, scipy, and PyCO2SYS packages. We also recommend that you have installed xarray, cartopy, and matplotlib to analyze and plot maps using from input data from netcdf files.
 
-# Installation for Python, Jupyter Notebook, and Google Colab
+# Installation for Python, Jupyter Notebook, or Google Colab
 
 First install the new functions as follows with pip or !pip in your notebook or terminal:<br>
 ```
@@ -24,7 +24,7 @@ from PyOAE import f_dTA, etamax
 
 As an alternative, you can also download PyOAE.py from this github repository (https://github.com/gjpelletier/PyOAE) and add both functions to your own project.<br>
 
-# Example use of root-finding method for Jupyter Notebook or Google Colab
+# Example use of f_dTA with the root-finding method in Jupyter Notebook or Google Colab
 
 The first step is to install PyOAE from github as follows:<br>
 ```
