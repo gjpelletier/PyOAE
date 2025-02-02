@@ -51,6 +51,7 @@ x_lwr = 500 # upper bound of the range of dTA values (umol/kg) to search for the
 chem_pi = np.array([2232,1861,1.346,0.201,26.683,34.004,0])    # TA, DIC, SiO3, PO4, temp, sal, pres for PI
 # specify the control conditions at time t before OAE for TA, DIC, SiO3, PO4, temp, sal, and pres
 chem_ctl = np.array([2230,1915,1.346,0.201,27.391,33.914,0])   # TA, DIC, SiO3, PO4, temp, sal, pres for control
+# specify the oae_type, obj_var, and cdreff
 oae_type = 'NaOH'     # 'NaOH' or 'Na2CO3'
 obj_var = 'alkstar'   # 'alkstar', 'co3', 'omara', 'omcal', or 'phtot'
 cdreff = 0.8          # e.g. use 0.8 for 80% CDR efficiency
