@@ -71,5 +71,5 @@ The result should be as follows
 ```
 The dTA needed for restoration to pre-industrial conditions is 155.59 umol/kg
 ```
-
+The current version of f_dTA analyzes the chem_pi and chem_ctl data from one grid cell at a time. Processing each grid cell takes up to a few seconds. To analyze an entire grid or a subset of grid cells, the user should use Python to loop through all of the grid cells that need to be evaluated and analyze each grid cells one at a time in the loop. 
 
