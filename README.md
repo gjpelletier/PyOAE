@@ -67,7 +67,7 @@ root = opt.brentq(f_x, x_upr, x_lwr)
 print("The dTA needed for restoration to pre-industrial conditions is %.2f umol/kg" % (root))
 ```
 
-The restult should be as follows:
+The result should be as follows
 ```
 The dTA needed for restoration to pre-industrial conditions is 155.59 umol/kg
 ```
