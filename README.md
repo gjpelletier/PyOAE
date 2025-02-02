@@ -9,3 +9,52 @@ Tools and examples for using Python and Jupyter for analysis of Ocean Alkalinity
 - calculation of the maximum hypothetical OAE efficiency etamax
 - calculation of the maximum hypothetical potential CDR
 
+EXAMPLE 1 - use of f_dTA function for root-finding to process one value at a time
+
+# import the packages that are needed
+import scipy.optimize as opt
+import numpy as np
+from PyOAE import f_dTA
+# assign the inputs that are needed
+x_upr = 0   # lower bound of the range of dTA values (umol/kg) to search for the root
+x_lwr = 500 # upper bound of the range of dTA values (umol/kg) to search for the root
+chem_pi = np.array([2232,1861,1.346,0.201,26.683,34.004,0])    # TA, DIC, SiO3, PO4, temp, sal, pres for PI
+chem_ctl = np.array([2230,1915,1.346,0.201,27.391,33.914,0])   # TA, DIC, SiO3, PO4, temp, sal, pres for control
+oae_type = 'NaOH'     # 'NaOH' or 'Na2CO3'
+obj_var = 'alkstar'   # 'alkstar', 'co3', 'omara', 'omcal', or 'phtot'
+cdreff = 0.8          # e.g. use 0.8 for 80% CDR efficiency
+# make the kwargs for f_dTA:
+kwargs = {
+  'chem_pi': chem_pi,
+  'chem_ctl': chem_ctl,
+  'oae_type': oae_type,
+  'obj_var': obj_var,
+  'cdreff': cdreff
+  }
+# make the lambda function that will be used to allow brentq to use the kwargs for f_dTA
+f_x = lambda x: f_dTA(x, **kwargs)
+# use brentq to find the root of dTA that results in OAE treated condtions equal to pre-industrial
+root = opt.brentq(f_x, x_upr, x_lwr)
+print("The dTA needed for restoration to pre-industrial conditions is %.2f umol/kg" % (root))
+
+EXAMPLE 2 - use of etamax function to process arrays of any shape
+
+# import the packages that are needed
+import numpy as np
+from PyOAE import etamax
+# assign the inputs that are needed
+dTA = 1   # lower bound of the range of dTA values (umol/kg) to search for the root
+TA = 2232
+DIC = 1861
+SiO3 = 1.346
+PO4 = 0.201
+Temp = 26.683
+Sal = 34.004
+Pres = 0
+# call the etamax function
+result = etamax(dTA, TA, DIC, SiO3, PO4, Temp, Sal, Pres)
+# display the result dictionary
+result
+
+
+
