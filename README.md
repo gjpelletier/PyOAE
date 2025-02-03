@@ -47,29 +47,29 @@ ds = xr.open_dataset("jiang_data_for_jupyter_v12.nc", chunks={"lon":0})
 ds_dict = {var: ds[var].values for var in ds.data_vars}
 # initialize output array and specify options
 ds_dict["dTA_root"] = np.full((180, 360), np.nan) # init out array 
-obj_var = 'alkstar'   # 'alkstar', 'co3', phtot', 'omara', or 'omcal'
-oae_type = 'NaOH'     # 'NaOH' or 'Na2CO3' used for OAE
-cdreff = 0.8          # CDRefficiency between 0-1 (e.g. 0.8 = 80%)
-x_upr = 0   # lower bound of possible dTA values (umol/kg)
-x_lwr = 500 # upper bound of possible dTA values (umol/kg)
+obj_var = 'alkstar'   # objective variable: 'alkstar', 'co3', phtot', 'omara', 'omcal'
+oae_type = 'NaOH'     # chemical used for OAE: 'NaOH' or 'Na2CO3'
+cdreff = 0.8          # CDR efficiency between 0-1 (e.g. 0.8 = 80%)
+x_upr = 0             # lower bound of possible dTA values (umol/kg)
+x_lwr = 500           # upper bound of possible dTA values (umol/kg)
 # main loop through all grid cells
 for i, j in np.ndindex((180,360)):
     if ds_dict["dist2coast"][i,j]<=100 and ds_dict["LME"][i,j]==11:  # coastal CCE
         chem_pi = np.full(7, np.nan)
-        chem_pi[0] = ds_dict["talk_1750"][i,j]
-        chem_pi[1] = ds_dict["dic_1750"][i,j]
-        chem_pi[2] = ds_dict["sio3"][i,j]
-        chem_pi[3] = ds_dict["po4"][i,j]
-        chem_pi[4] = ds_dict["temp_1750"][i,j]
-        chem_pi[5] = ds_dict["sal_1750"][i,j]        
+        chem_pi[0] = ds_dict["talk_1750"][i,j]   # TA in 1750 (umo/kg)
+        chem_pi[1] = ds_dict["dic_1750"][i,j]    # DIC in 1750 (umo/kg)
+        chem_pi[2] = ds_dict["sio3"][i,j]        # SiO3 in 1750 (umo/kg)
+        chem_pi[3] = ds_dict["po4"][i,j]         # PO4 in 1750 (umo/kg)
+        chem_pi[4] = ds_dict["temp_1750"][i,j]   # Temperature in 1750 (degC)
+        chem_pi[5] = ds_dict["sal_1750"][i,j]    # Salinity in 1750 (psu)        
         chem_pi[6] = 0
         chem_ctl = np.full(7, np.nan)
-        chem_ctl[0] = ds_dict["talk_2010"][i,j]
-        chem_ctl[1] = ds_dict["dic_2010"][i,j]
-        chem_ctl[2] = ds_dict["sio3"][i,j]
-        chem_ctl[3] = ds_dict["po4"][i,j]
-        chem_ctl[4] = ds_dict["temp_2010"][i,j]
-        chem_ctl[5] = ds_dict["sal_2010"][i,j]
+        chem_ctl[0] = ds_dict["talk_2010"][i,j]   # TA in 2010 (umo/kg)
+        chem_ctl[1] = ds_dict["dic_2010"][i,j]    # DIC in 2010 (umo/kg)
+        chem_ctl[2] = ds_dict["sio3"][i,j]        # SiO3 in 2010 (umo/kg)
+        chem_ctl[3] = ds_dict["po4"][i,j]         # PO4 in 2010 (umo/kg)
+        chem_ctl[4] = ds_dict["temp_2010"][i,j]   # Temperature in 2010 (degC)
+        chem_ctl[5] = ds_dict["sal_2010"][i,j]    # Salinity in 201 (psu) 
         chem_ctl[6] = 0
         kwargs = {
         'chem_pi': chem_pi,
