@@ -76,6 +76,41 @@ The dTA needed for restoration to pre-industrial conditions is 155.59 umol/kg
 ```
 The current version of f_dTA analyzes the chem_pi and chem_ctl data from one grid cell at a time. Processing each grid cell takes about 1-3 seconds. To analyze all of the grid cells in a model domain, or a subset for a region of selected grid cells, the user should use Python to loop through all of the grid cells that need to be evaluated, and solve for the root in each grid cell one at a time in the loop. This method of looping through a region of grid cells is demonstrated in the PyOAE_example_root_finding.ipynb available at this repository
 
+# Example use of etamax in Jupyter Notebook or Google Colab
+
+In this example we will read global arrays of data from the jiang_data_for_jupyter_v12.nc file, available in this repository, calcuate the global array of etamax for the year 2010, and plot a map of the results<br>
+```
+import numpy as np
+import xarray as xr
+import matplotlib.pyplot as plt
+from PyOAE import etamax
+# read the global arrays of surface ocean data and assign to a dictionary
+ds = xr.open_dataset("jiang_data_for_jupyter_v12.nc", chunks={"lon":0})
+ds_dict = {var: ds[var].values for var in ds.data_vars}
+# extract the global arrays of chemistry data from the year 2010
+TA_ctl = ds_dict["talk_2010"]  # TA (umol/kg)
+DIC_ctl = ds_dict["dic_2010"]  # DIC (umol/kg)
+SiO3_ctl = ds_dict["sio3"]    # SiO3 (umol/kg)
+PO4_ctl = ds_dict["po4"]    # PO4 (umol/kg)
+Temp_ctl = ds_dict["temp_2010"]    # temperatre (degC)
+Sal_ctl = ds_dict["sal_2010"]    # salinity (psu)
+Pres_ctl = np.zeros((180, 360))  # pressure (dbar)
+dTA = 1    # assumed amount of added alkalinity by OAE (umol/kg)
+# calculate the etamax for the dTA in all grid cells of the global array
+result = etamax(dTA, TA_ctl, DIC_ctl, SiO3_ctl, PO4_ctl, Temp_ctl, Sal_ctl, Pres_ctl)
+etamax = result["etamax"]
+# plot a map of the results
+plt.figure(figsize=(8, 5))  # Set the figure size (width, height)
+plt.imshow(np.flipud(etamax), cmap='plasma', interpolation='none')
+plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
+plt.title('etamax in 2010 with dTA=1 umol/kg')
+plt.savefig('etamax_2010.png', format='png')
+plt.xticks([]); plt.yticks([])
+plt.show()
+```
+![etamax_2010](https://github.com/user-attachments/assets/0577cf77-577f-4ece-a115-37301c57cdef)
+
+
 
 
 
