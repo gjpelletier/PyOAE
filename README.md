@@ -3,7 +3,7 @@ Python tools for analysis of Ocean Alkalinity Enhancement
 
 by Greg Pelletier
 
-Tools for analysis of Ocean Alkalinity Enhancement, including Jupyter Notebooks for the following examples:
+Tools for analysis of Ocean Alkalinity Enhancement (OAE), including Jupyter Notebooks for the following examples:
 
 - Root-finding method to solve for the OAE treatment needed to restore any carbonate system variable (e.g. TA-DIC, CO3--, pH, Ωar, etc.) to pre-industrial conditions in the coastal California Current Ecosystem. This notebook can also be used to solve for any other location in the global oceans
 - Calculation of the maximum hypothetical OAE efficiency ηmax (etamax) for any assumed addition of alkalinity. The ηmax is a dimensionless quantity that is calculated as the hypothetical maximum potential CDR (umol/kg) divided by the amount of added alkalinity (umol/kg).
@@ -26,7 +26,7 @@ As an alternative, you can also download PyOAE.py from this github repository (h
 
 # Example use of the root-finding method to solve for the OAE needed to restore OA indicators to pre-industrial conditions
 
-The difference between TA and DIC, also known as Alk* (Sarmiento & Gruber, 2006), can be used as a surrogate variable to interpret the response of other carbonate system variables (e.g. CO3--, pH, Ωara, Ωcal). Ocean acidification has caused a decrease in TA-DIC since pre-industrial conditions (Sarmiento & Gruber, 2006).
+The difference between TA and DIC, also known as Alk* (Sarmiento & Gruber, 2006), can be used as a surrogate variable to interpret the response of other carbonate system variables (e.g. CO3--, pH, Ωara, Ωcal). Ocean acidification (OA) has caused a decrease in TA-DIC since pre-industrial conditions (Sarmiento & Gruber, 2006).
 
 In this example we will use the root-finding method to solve for the amount of OAE needed to restore the TA-DIC in 2010 in the coastal California Current Ecosystem (CCE) to pre-industrial conditions. A detailed explanation of the source of the ocean chemistry data used in this example is provided in the Jupyter Notebooks available in this repository
 
