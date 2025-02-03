@@ -69,7 +69,7 @@ for i, j in np.ndindex((180,360)):
         chem_ctl[2] = ds_dict["sio3"][i,j]        # SiO3 in 2010 (umol/kg)
         chem_ctl[3] = ds_dict["po4"][i,j]         # PO4 in 2010 (umol/kg)
         chem_ctl[4] = ds_dict["temp_2010"][i,j]   # Temperature in 2010 (degC)
-        chem_ctl[5] = ds_dict["sal_2010"][i,j]    # Salinity in 201 (psu) 
+        chem_ctl[5] = ds_dict["sal_2010"][i,j]    # Salinity in 2010 (psu) 
         chem_ctl[6] = 0
         kwargs = {
         'chem_pi': chem_pi,
