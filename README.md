@@ -48,9 +48,9 @@ from PyOAE import f_dTA
 x_upr = 0   # lower bound of the range of dTA values (umol/kg) to search for the root
 x_lwr = 500 # upper bound of the range of dTA values (umol/kg) to search for the root
 # specify the pre-industrial TA, DIC, SiO3, PO4, temp, sal, and pres
-chem_pi = np.array([2232,1861,1.346,0.201,26.683,34.004,0])    # TA, DIC, SiO3, PO4, temp, sal, pres for PI
+chem_pi = np.array([2232,1861,1.346,0.201,26.683,34.004,0])  
 # specify the control conditions at time t before OAE for TA, DIC, SiO3, PO4, temp, sal, and pres
-chem_ctl = np.array([2230,1915,1.346,0.201,27.391,33.914,0])   # TA, DIC, SiO3, PO4, temp, sal, pres for control
+chem_ctl = np.array([2230,1915,1.346,0.201,27.391,33.914,0])  
 # specify the oae_type, obj_var, and cdreff
 oae_type = 'NaOH'     # 'NaOH' or 'Na2CO3'
 obj_var = 'alkstar'   # 'alkstar', 'co3', 'omara', 'omcal', or 'phtot'
@@ -65,7 +65,7 @@ kwargs = {
   }
 # make the lambda function that will be used to allow brentq to use the kwargs for f_dTA
 f_x = lambda x: f_dTA(x, kwargs)
-# use brentq to find the root of dTA that results in OAE treated condtions equal to pre-industrial
+# use brentq to find the root of dTA with OAE treated condtion equal to pre-industrial
 root = opt.brentq(f_x, x_upr, x_lwr)
 print("The dTA needed for restoration to pre-industrial conditions is %.2f umol/kg" % (root))
 ```
