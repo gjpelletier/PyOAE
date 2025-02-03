@@ -110,6 +110,7 @@ plt.savefig('etamax_2010.png', format='png')
 plt.show()
 ```
 ![etamax_2010](https://github.com/user-attachments/assets/6164adee-dd0c-4855-8449-eb76aacb0326)
+
 Figure 1. Values of the maximum theoretical OAE efficiency ηmax for the global ocean based on data from Jiang et al (2023) for a ∆TA perturbation of 1 umol/kg
 
 
