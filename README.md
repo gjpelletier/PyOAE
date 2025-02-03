@@ -108,7 +108,7 @@ plt.savefig('etamax_2010.png', format='png')
 plt.xticks([]); plt.yticks([])
 plt.show()
 ```
-![etamax_2010](https://github.com/user-attachments/assets/0577cf77-577f-4ece-a115-37301c57cdef)
+![etamax_2010](https://github.com/user-attachments/assets/cd55b564-a447-4d69-af9e-c4d32a30f93c)
 
 
 
