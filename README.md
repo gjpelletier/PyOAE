@@ -26,55 +26,107 @@ As an alternative, you can also download PyOAE.py from this github repository (h
 
 # Example use of f_dTA with the root-finding method
 
-The first step is to install PyOAE from github as follows:<br>
-```
-!pip install git+https://github.com/gjpelletier/PyOAE.git
-```
+The difference between TA and DIC, also known as Alk* (Sarmiento & Gruber, 2006), can be used as a surrogate variable to interpret the response of other carbonate system variables (e.g. CO3--, pH, Ωara, Ωcal), and also interpret the response of calcification to OA and OAE (Xue & Cai, 2020). Ocean acidification has caused a decrease in TA-DIC since pre-industrial conditions (Sarmiento & Gruber, 2006).
 
-Next we need to import the f_dTA function, and also scipy.optimize and numpy as follows:<br>
-```
-from PyOAE import f_dTA
-import scipy.optimize as opt
-import numpy as np
-```
+In this example we will use the root-finding method to solve for the amount of OAE needed to restore the TA-DIC in 2010 in the coastal California Current Ecosystem to pre-industrial conditions
 
-Next we will analyze a simple example of data from a single model grid cell
+First we will solve for the amount of OAE needed to restore the TA-DIC in the coastal CCE to pre-industrial as follows:<br>
 ```
 # import the packages that are needed
 import scipy.optimize as opt
 import numpy as np
+import xarray as xr
+import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
 from PyOAE import f_dTA
-# assign the inputs that are needed
-x_upr = 0   # lower bound of dTA values (umol/kg) to search for the root
-x_lwr = 500 # upper bound of dTA values (umol/kg) to search for the root
-# specify the pre-industrial TA, DIC, SiO3, PO4, temp, sal, and pres
-chem_pi = np.array([2232,1861,1.346,0.201,26.683,34.004,0])  
-# control conditions before OAE for TA,DIC,SiO3,PO4,temp,sal,pres
-chem_ctl = np.array([2230,1915,1.346,0.201,27.391,33.914,0])  
-# specify the oae_type, obj_var, and cdreff
-oae_type = 'NaOH'     # 'NaOH' or 'Na2CO3'
-obj_var = 'alkstar'   # 'alkstar', 'co3', 'omara', 'omcal', or 'phtot'
-cdreff = 0.8          # e.g. use 0.8 for 80% CDR efficiency
-# make the kwargs for f_dTA:
-kwargs = {
-  'chem_pi': chem_pi,
-  'chem_ctl': chem_ctl,
-  'oae_type': oae_type,
-  'obj_var': obj_var,
-  'cdreff': cdreff
-  }
-# lambda function that will allow brentq to use the kwargs for f_dTA
-f_x = lambda x: f_dTA(x, kwargs)
-# brentq to find root dTA with OAE treated condtion equal to pre-industrial
-root = opt.brentq(f_x, x_upr, x_lwr)
-print("The dTA needed to restore to pre-industrial conditions is %.2f umol/kg" % (root))
+# read the global arrays of surface ocean data and assign to a dictionary
+ds = xr.open_dataset("jiang_data_for_jupyter_v12.nc", chunks={"lon":0})
+ds_dict = {var: ds[var].values for var in ds.data_vars}
+# initialize output array and specify options
+ds_dict["dTA_root"] = np.full((180, 360), np.nan) # init out array 
+obj_var = 'alkstar'   # 'alkstar', 'co3', phtot', 'omara', or 'omcal'
+oae_type = 'NaOH'     # 'NaOH' or 'Na2CO3' used for OAE
+cdreff = 0.8          # CDRefficiency between 0-1 (e.g. 0.8 = 80%)
+x_upr = 0   # lower bound of possible dTA values (umol/kg)
+x_lwr = 500 # upper bound of possible dTA values (umol/kg)
+# main loop through all grid cells
+for i, j in np.ndindex((180,360)):
+    if ds_dict["dist2coast"][i,j]<=100 and ds_dict["LME"][i,j]==11:  # coastal CCE
+        chem_pi = np.full(7, np.nan)
+        chem_pi[0] = ds_dict["talk_1750"][i,j]
+        chem_pi[1] = ds_dict["dic_1750"][i,j]
+        chem_pi[2] = ds_dict["sio3"][i,j]
+        chem_pi[3] = ds_dict["po4"][i,j]
+        chem_pi[4] = ds_dict["temp_1750"][i,j]
+        chem_pi[5] = ds_dict["sal_1750"][i,j]        
+        chem_pi[6] = 0
+        chem_ctl = np.full(7, np.nan)
+        chem_ctl[0] = ds_dict["talk_2010"][i,j]
+        chem_ctl[1] = ds_dict["dic_2010"][i,j]
+        chem_ctl[2] = ds_dict["sio3"][i,j]
+        chem_ctl[3] = ds_dict["po4"][i,j]
+        chem_ctl[4] = ds_dict["temp_2010"][i,j]
+        chem_ctl[5] = ds_dict["sal_2010"][i,j]
+        chem_ctl[6] = 0
+        kwargs = {
+        'chem_pi': chem_pi,
+        'chem_ctl': chem_ctl,
+        'oae_type': oae_type,
+        'obj_var': obj_var,
+        'cdreff': cdreff
+        }
+        nnn_pi = np.count_nonzero(~np.isnan(chem_pi))  # number of non-nan
+        nnn_ctl = np.count_nonzero(~np.isnan(chem_ctl))  # number of non-nan
+        if nnn_pi==7 and nnn_ctl==7:
+            f_x = lambda x: f_dTA(x, kwargs)
+            root = opt.brentq(f_x, x_upr, x_lwr)
+            print("i: %.0f, j: %.0f, root: %.4f" % (i,j,root))
+            ds_dict["dTA_root"][i,j] = root
 ```
 
-The result should be as follows
+Next we will make a map showing the results:
 ```
-The dTA needed to restore to pre-industrial conditions is 155.59 umol/kg
+fig = plt.figure(figsize=(5.1, 5.5))
+ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+# define lon and lat
+lon = np.linspace(0.5, 359.5, 360)
+lat = np.linspace(-89.5, 89.5, 180)
+lon2d, lat2d = np.meshgrid(lon, lat)
+# define ticks and labels
+lon_ticks = range(-120, -100, 10)  # Longitude ticks every 30 degrees
+lat_ticks = range(20, 55, 5)    # Latitude ticks every 30 degrees
+xtick_labels = ['120°W', '110°W']
+ytick_labels = ['20°N', '25°N', '30°N', '35°N', '40°N', '45°N', '50°N']
+# summary stats
+# plotdata = ds_dict["dTA_root"]
+mean = np.nanmean(ds_dict["dTA_root"])
+stdev = np.nanstd(ds_dict["dTA_root"])
+# ax.set_title('Figure 1. OAE needed to\nrestore OA in coastal CCE\nto pre-industrial')
+ax.set_title('Figure 1. OAE needed to restore\nTA-DIC to pre-industrial')
+ax.projection = ccrs.PlateCarree()
+ax.set_extent([-127.5+360, -107.5+360, 20, 50], crs=ccrs.PlateCarree())
+ax.set_xticks(lon_ticks, crs=ccrs.PlateCarree())
+ax.set_yticks(lat_ticks, crs=ccrs.PlateCarree())
+ax.set_xticklabels(xtick_labels)
+ax.set_yticklabels(ytick_labels)
+ax.add_feature(cfeature.LAND, facecolor='lightgray')
+ax.coastlines('10m', edgecolor='none', linewidth=0.5)
+ax.text(-126.5, 24, 'Mean: '+f"{mean:.0f} umol/kg", transform=ccrs.PlateCarree(),
+        fontsize=11, color='black', ha='left', va='center')
+ax.text(-126.5, 22, 'Stdev: '+f"{stdev:.0f} umol/kg", transform=ccrs.PlateCarree(),
+        fontsize=11, color='black', ha='left', va='center')
+cmap = plt.get_cmap('plasma').reversed()
+contour = ax.pcolor(lon, lat, ds_dict["dTA_root"], transform=ccrs.PlateCarree(), cmap=cmap)
+cbar = plt.colorbar(contour, orientation='vertical', pad=0.05)
+cbar.set_label(r'$\Delta$TA needed to restore TA-DIC to PI $\mu$mol/kg')
+plt.savefig('OAE_needed_for_OA_in_CCE.png', format='png')
 ```
-The current version of f_dTA analyzes the chem_pi and chem_ctl data from one grid cell at a time. Processing each grid cell takes about 1-3 seconds. To analyze all of the grid cells in a model domain, or a subset for a region of selected grid cells, the user should use Python to loop through all of the grid cells that need to be evaluated, and solve for the root in each grid cell one at a time in the loop. This method of looping through a region of grid cells is demonstrated in the PyOAE_example_root_finding.ipynb available at this repository
+![OAE_needed_for_OA_in_CCE](https://github.com/user-attachments/assets/83b1e758-fa72-4ac3-8cb0-90d030fe43db)
+
+Figure 1. The amoount of OAE needed in the coastal California Current Ecosystem to restore the TA-DIC in 2010 to pre-industrial conditions, assuming that NaOH is used for OAE, and the CDR efficiency is 80%.
+
+Note that the current version of f_dTA analyzes the chem_pi and chem_ctl data from one grid cell at a time. Processing each grid cell takes about 1-3 seconds. To analyze all of the grid cells in a model domain, or a subset for a region of selected grid cells, the user should use Python to loop through all of the grid cells that need to be evaluated, and solve for the root in each grid cell one at a time in the loop. This method of looping through a region of grid cells is demonstrated in the PyOAE_example_root_finding.ipynb available at this repository
 
 # Example use of etamax for a global data set
 
@@ -103,15 +155,15 @@ etamax = result["etamax"]
 plt.figure(figsize=(8, 5))  # Set the figure size (width, height)
 plt.imshow(np.flipud(etamax), cmap='plasma', interpolation='none')
 plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
-plt.title(r'Figure 1. $\eta$max in 2010 with $\Delta$TA=1 $\mu$mol $kg^{-1}$')
+plt.title(r'Figure 2. $\eta$max in 2010 with $\Delta$TA=1 $\mu$mol $kg^{-1}$')
 plt.xticks([])
 plt.yticks([])
 plt.savefig('etamax_2010.png', format='png')
 plt.show()
 ```
-![etamax_2010](https://github.com/user-attachments/assets/6164adee-dd0c-4855-8449-eb76aacb0326)
+![etamax_2010](https://github.com/user-attachments/assets/0100f776-1c7f-4363-a964-d113e26de7ca)
 
-Figure 1. Values of the maximum theoretical OAE efficiency ηmax for the global oceans based on data from Jiang et al (2023) for a ∆TA perturbation of 1 umol/kg
+Figure 2. Values of the maximum theoretical OAE efficiency ηmax for the global oceans based on data from Jiang et al (2023) for a ∆TA perturbation of 1 umol/kg
 
 
 
