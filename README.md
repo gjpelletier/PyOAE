@@ -126,7 +126,7 @@ plt.savefig('OAE_needed_for_OA_in_CCE.png', format='png')
 ```
 ![OAE_needed_for_OA_in_CCE](https://github.com/user-attachments/assets/83b1e758-fa72-4ac3-8cb0-90d030fe43db)
 
-Figure 1. The amoount of OAE needed in the coastal California Current Ecosystem to restore the TA-DIC in 2010 to pre-industrial conditions, assuming that NaOH is used for OAE, and the CDR efficiency is 80%.
+Figure 1. The amount of OAE needed in the coastal California Current Ecosystem to restore the TA-DIC in 2010 to pre-industrial conditions, assuming that NaOH is used for OAE, and the CDR efficiency is 80%.
 
 # Example use of etamax for a global data set
 
