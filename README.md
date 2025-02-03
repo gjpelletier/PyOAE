@@ -6,7 +6,7 @@ by Greg Pelletier
 Tools for analysis of Ocean Alkalinity Enhancement, including Jupyter Notebooks for the following examples:
 
 - Root-finding method to solve for the OAE treatment needed to restore any carbonate system variable (e.g. TA-DIC, CO3--, pH, Ωar, etc.) to pre-industrial conditions in the coastal California Current Ecosystem. This notebook can also be used to solve for any other location in the global oceans
-- Calculation of the maximum hypothetical OAE efficiency "etamax" in the global oceans
+- Calculation of the maximum hypothetical OAE efficiency "etamax"
 
 The PyOAE package requires that you have already installed numpy, scipy, and PyCO2SYS packages. We also recommend that you have installed xarray, cartopy, and matplotlib to analyze and plot maps using from input data from netcdf files.
 
