@@ -103,12 +103,16 @@ etamax = result["etamax"]
 plt.figure(figsize=(8, 5))  # Set the figure size (width, height)
 plt.imshow(np.flipud(etamax), cmap='plasma', interpolation='none')
 plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
-plt.title('etamax in 2010 with dTA=1 umol/kg')
+plt.title(r'Figure 1. $\eta$max in 2010 with $\Delta$TA=1 $\mu$mol $kg^{-1}$')
+plt.xticks([])
+plt.yticks([])
 plt.savefig('etamax_2010.png', format='png')
-plt.xticks([]); plt.yticks([])
 plt.show()
 ```
-![etamax_2010](https://github.com/user-attachments/assets/cd55b564-a447-4d69-af9e-c4d32a30f93c)
+![etamax_2010](https://github.com/user-attachments/assets/6164adee-dd0c-4855-8449-eb76aacb0326)
+Figure 1. Values of the maximum theoretical OAE efficiency ηmax for the global ocean based on data from Jiang et al (2023) for a ∆TA perturbation of 1 umol/kg
+
+
 
 
 
