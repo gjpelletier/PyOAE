@@ -45,11 +45,11 @@ import scipy.optimize as opt
 import numpy as np
 from PyOAE import f_dTA
 # assign the inputs that are needed
-x_upr = 0   # lower bound of the range of dTA values (umol/kg) to search for the root
-x_lwr = 500 # upper bound of the range of dTA values (umol/kg) to search for the root
+x_upr = 0   # lower bound of dTA values (umol/kg) to search for the root
+x_lwr = 500 # upper bound of dTA values (umol/kg) to search for the root
 # specify the pre-industrial TA, DIC, SiO3, PO4, temp, sal, and pres
 chem_pi = np.array([2232,1861,1.346,0.201,26.683,34.004,0])  
-# specify the control conditions at time t before OAE for TA, DIC, SiO3, PO4, temp, sal, and pres
+# control conditions before OAE for TA,DIC,SiO3,PO4,temp,sal,pres
 chem_ctl = np.array([2230,1915,1.346,0.201,27.391,33.914,0])  
 # specify the oae_type, obj_var, and cdreff
 oae_type = 'NaOH'     # 'NaOH' or 'Na2CO3'
@@ -63,11 +63,11 @@ kwargs = {
   'obj_var': obj_var,
   'cdreff': cdreff
   }
-# make the lambda function that will be used to allow brentq to use the kwargs for f_dTA
+# lambda function that will allow brentq to use the kwargs for f_dTA
 f_x = lambda x: f_dTA(x, kwargs)
-# use brentq to find the root of dTA with OAE treated condtion equal to pre-industrial
+# brentq to find root dTA with OAE treated condtion equal to pre-industrial
 root = opt.brentq(f_x, x_upr, x_lwr)
-print("The dTA needed for restoration to pre-industrial conditions is %.2f umol/kg" % (root))
+print(r"The $\Delta$TA to restore 2010 to pre-industrial conditions is %.2f umol/kg" % (root))
 ```
 
 The result should be as follows
