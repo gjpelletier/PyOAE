@@ -97,7 +97,7 @@ Sal_ctl = ds_dict["sal_2010"]    # salinity (psu)
 Pres_ctl = np.zeros((180, 360))  # pressure (dbar)
 dTA = 1    # assumed amount of added alkalinity by OAE (umol/kg)
 # calculate the etamax for the dTA in all grid cells of the global array
-result = etamax(dTA, TA_ctl, DIC_ctl, SiO3_ctl, PO4_ctl, Temp_ctl, Sal_ctl, Pres_ctl)
+result = etamax(dTA,TA_ctl,DIC_ctl,SiO3_ctl,PO4_ctl,Temp_ctl,Sal_ctl,Pres_ctl)
 etamax = result["etamax"]
 # plot a map of the results
 plt.figure(figsize=(8, 5))  # Set the figure size (width, height)
