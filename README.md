@@ -30,6 +30,8 @@ The difference between TA and DIC, also known as Alk* (Sarmiento & Gruber, 2006)
 
 In this example we will use the root-finding method to solve for the amount of OAE needed to restore the TA-DIC in 2010 in the coastal California Current Ecosystem to pre-industrial conditions. A detailed explanation of the source of the ocean chemistry data used in this example is provided in the Jupyter Notebooks available in this repository
 
+The current version of f_dTA analyzes the ocean chemistry data from one grid cell at a time. Processing each grid cell takes about 1-3 seconds. To analyze all of the grid cells in a model domain, or a subset for a region of selected grid cells, we use Python to loop through all of the grid cells that need to be evaluated, and solve for the root in each grid cell one at a time in the loop. 
+
 First we will solve for the amount of OAE needed to restore the TA-DIC in the coastal CCE to pre-industrial as follows:<br>
 ```
 # import the packages that are needed
@@ -125,8 +127,6 @@ plt.savefig('OAE_needed_for_OA_in_CCE.png', format='png')
 ![OAE_needed_for_OA_in_CCE](https://github.com/user-attachments/assets/83b1e758-fa72-4ac3-8cb0-90d030fe43db)
 
 Figure 1. The amoount of OAE needed in the coastal California Current Ecosystem to restore the TA-DIC in 2010 to pre-industrial conditions, assuming that NaOH is used for OAE, and the CDR efficiency is 80%.
-
-Note that the current version of f_dTA analyzes the chem_pi and chem_ctl data from one grid cell at a time. Processing each grid cell takes about 1-3 seconds. To analyze all of the grid cells in a model domain, or a subset for a region of selected grid cells, the user should use Python to loop through all of the grid cells that need to be evaluated, and solve for the root in each grid cell one at a time in the loop. This method of looping through a region of grid cells is demonstrated in the PyOAE_example_root_finding.ipynb available at this repository
 
 # Example use of etamax for a global data set
 
