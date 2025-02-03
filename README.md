@@ -122,9 +122,9 @@ cmap = plt.get_cmap('plasma').reversed()
 contour = ax.pcolor(lon, lat, ds_dict["dTA_root"], transform=ccrs.PlateCarree(), cmap=cmap)
 cbar = plt.colorbar(contour, orientation='vertical', pad=0.05)
 cbar.set_label(r'$\Delta$TA needed to restore TA-DIC to PI $\mu$mol/kg')
-plt.savefig('OAE_needed_for_OA_in_CCE.png', format='png', dpi=300)
+plt.savefig('OAE_needed_for_OA_in_CCE.png', format='png')
 ```
-![OAE_needed_for_OA_in_CCE](https://github.com/user-attachments/assets/26fcf074-540b-4e22-a959-02c7fd3fa395)
+![OAE_needed_for_OA_in_CCE](https://github.com/user-attachments/assets/ebe2b86e-8184-4887-9378-ecd657b69f83)
 
 Figure 1. The amount of OAE needed in the coastal California Current Ecosystem to restore the TA-DIC in 2010 to pre-industrial conditions, assuming that NaOH is used for OAE, and the CDR efficiency is 80%.
 
