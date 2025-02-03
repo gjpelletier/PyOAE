@@ -78,7 +78,7 @@ The current version of f_dTA analyzes the chem_pi and chem_ctl data from one gri
 
 # Example use of etamax for a global data set
 
-In this example we will read global arrays of data from the jiang_data_for_jupyter_v12.nc file, available in this repository, calcuate the global array of ηmax for the year 2010, and plot a map of the results. The Jupyter Notebook examples available at this repository provide additional analysis and citations for the sources of data provided in the example netcdf file.<br>
+In this example we will read global arrays of data from the jiang_data_for_jupyter_v12.nc file, available in this repository, calculate the global array of ηmax for the year 2010, and plot a map of the results. The Jupyter Notebooks available at this repository provide examples of additional analysis of ηmax, and citations for the sources of the ocean chemistry data provided in the example netcdf file.<br>
 ```
 import numpy as np
 import xarray as xr
