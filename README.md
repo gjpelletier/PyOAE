@@ -72,7 +72,7 @@ print("The dTA needed to restore 2010 to pre-industrial conditions is %.2f umol/
 
 The result should be as follows
 ```
-The dTA needed for restoration to pre-industrial conditions is 155.59 umol/kg
+The dTA needed to restore 2010 to pre-industrial conditions is 155.59 umol/kg
 ```
 The current version of f_dTA analyzes the chem_pi and chem_ctl data from one grid cell at a time. Processing each grid cell takes about 1-3 seconds. To analyze all of the grid cells in a model domain, or a subset for a region of selected grid cells, the user should use Python to loop through all of the grid cells that need to be evaluated, and solve for the root in each grid cell one at a time in the loop. This method of looping through a region of grid cells is demonstrated in the PyOAE_example_root_finding.ipynb available at this repository
 
