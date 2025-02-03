@@ -122,9 +122,9 @@ cmap = plt.get_cmap('plasma').reversed()
 contour = ax.pcolor(lon, lat, ds_dict["dTA_root"], transform=ccrs.PlateCarree(), cmap=cmap)
 cbar = plt.colorbar(contour, orientation='vertical', pad=0.05)
 cbar.set_label(r'$\Delta$TA needed to restore TA-DIC to PI $\mu$mol/kg')
-plt.savefig('OAE_needed_for_OA_in_CCE.png', format='png')
+plt.savefig('OAE_needed_for_OA_in_CCE.png', format='png', dpi=300)
 ```
-![OAE_needed_for_OA_in_CCE](https://github.com/user-attachments/assets/83b1e758-fa72-4ac3-8cb0-90d030fe43db)
+![OAE_needed_for_OA_in_CCE](https://github.com/user-attachments/assets/26fcf074-540b-4e22-a959-02c7fd3fa395)
 
 Figure 1. The amount of OAE needed in the coastal California Current Ecosystem to restore the TA-DIC in 2010 to pre-industrial conditions, assuming that NaOH is used for OAE, and the CDR efficiency is 80%.
 
@@ -158,10 +158,10 @@ plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
 plt.title(r'Figure 2. $\eta$max in 2010 with $\Delta$TA=1 $\mu$mol $kg^{-1}$')
 plt.xticks([])
 plt.yticks([])
-plt.savefig('etamax_2010.png', format='png')
+plt.savefig('etamax_2010.png', format='png', dpi=300)
 plt.show()
 ```
-![etamax_2010](https://github.com/user-attachments/assets/0100f776-1c7f-4363-a964-d113e26de7ca)
+![etamax_2010](https://github.com/user-attachments/assets/fc58b293-9e57-4c1b-bfb9-9024e974f66f)
 
 Figure 2. Values of the maximum theoretical OAE efficiency ηmax for the global oceans based on data from Jiang et al (2023) for a ∆TA perturbation of 1 umol/kg
 
