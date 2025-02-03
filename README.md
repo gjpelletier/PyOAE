@@ -10,7 +10,7 @@ Tools for analysis of Ocean Alkalinity Enhancement, including Jupyter Notebooks 
 
 The PyOAE package requires that you have already installed numpy, scipy, and PyCO2SYS packages. We also recommend that you have installed xarray, cartopy, and matplotlib to analyze and plot maps using from input data from netcdf files.
 
-# Installation for Python, Jupyter Notebook, or Google Colab
+# Installation for Python or Jupyter Notebook
 
 First install the new functions as follows with pip or !pip in your notebook or terminal:<br>
 ```
@@ -24,7 +24,7 @@ from PyOAE import f_dTA, etamax
 
 As an alternative, you can also download PyOAE.py from this github repository (https://github.com/gjpelletier/PyOAE) and add both functions to your own project.<br>
 
-# Example use of f_dTA with the root-finding method in Jupyter Notebook or Google Colab
+# Example use of f_dTA with the root-finding method in Jupyter Notebook
 
 The first step is to install PyOAE from github as follows:<br>
 ```
@@ -76,7 +76,7 @@ The dTA needed for restoration to pre-industrial conditions is 155.59 umol/kg
 ```
 The current version of f_dTA analyzes the chem_pi and chem_ctl data from one grid cell at a time. Processing each grid cell takes about 1-3 seconds. To analyze all of the grid cells in a model domain, or a subset for a region of selected grid cells, the user should use Python to loop through all of the grid cells that need to be evaluated, and solve for the root in each grid cell one at a time in the loop. This method of looping through a region of grid cells is demonstrated in the PyOAE_example_root_finding.ipynb available at this repository
 
-# Example use of etamax in Jupyter Notebook or Google Colab
+# Example use of etamax in Jupyter Notebook
 
 In this example we will read global arrays of data from the jiang_data_for_jupyter_v12.nc file, available in this repository, calcuate the global array of etamax for the year 2010, and plot a map of the results<br>
 ```
