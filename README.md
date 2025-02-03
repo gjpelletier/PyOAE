@@ -24,7 +24,7 @@ from PyOAE import f_dTA, etamax
 
 As an alternative, you can also download PyOAE.py from this github repository (https://github.com/gjpelletier/PyOAE) and add both functions to your own project.<br>
 
-# Example use of the root-finding method to solve for the OAE needed for restoration of OA indicators to pre-inustrial conditions
+# Example use of the root-finding method to solve for the OAE needed to restore OA indicators to pre-inustrial conditions
 
 The difference between TA and DIC, also known as Alk* (Sarmiento & Gruber, 2006), can be used as a surrogate variable to interpret the response of other carbonate system variables (e.g. CO3--, pH, Ωara, Ωcal). Ocean acidification has caused a decrease in TA-DIC since pre-industrial conditions (Sarmiento & Gruber, 2006).
 
