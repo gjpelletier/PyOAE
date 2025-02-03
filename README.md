@@ -67,7 +67,7 @@ kwargs = {
 f_x = lambda x: f_dTA(x, kwargs)
 # brentq to find root dTA with OAE treated condtion equal to pre-industrial
 root = opt.brentq(f_x, x_upr, x_lwr)
-print(r"$\Delta$TA to restore 2010 to pre-industrial conditions is %.2f umol/kg" % (root))
+print("The dTA needed to restore 2010 to pre-industrial conditions is %.2f umol/kg" % (root))
 ```
 
 The result should be as follows
