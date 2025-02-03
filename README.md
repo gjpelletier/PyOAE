@@ -6,7 +6,7 @@ by Greg Pelletier
 Tools for analysis of Ocean Alkalinity Enhancement, including Jupyter Notebooks for the following examples:
 
 - Root-finding method to solve for the OAE treatment needed to restore any carbonate system variable (e.g. TA-DIC, CO3--, pH, Ωar, etc.) to pre-industrial conditions in the coastal California Current Ecosystem. This notebook can also be used to solve for any other location in the global oceans
-- Calculation of the maximum hypothetical OAE efficiency "etamax" for any assumed addition of alkalinity. The etamax is a dimensionless quantity that is calculated as the hypothetical maximum potential CDR (umol/kg) divided by the amount of added alkalinity (umol/kg).
+- Calculation of the maximum hypothetical OAE efficiency ηmax (etamax) for any assumed addition of alkalinity. The ηmax is a dimensionless quantity that is calculated as the hypothetical maximum potential CDR (umol/kg) divided by the amount of added alkalinity (umol/kg).
 
 The PyOAE package requires that you have already installed numpy, scipy, and PyCO2SYS packages. We also recommend that you have installed xarray, cartopy, and matplotlib to analyze and plot maps using from input data from netcdf files.
 
@@ -78,7 +78,7 @@ The current version of f_dTA analyzes the chem_pi and chem_ctl data from one gri
 
 # Example use of etamax for a global data set
 
-In this example we will read global arrays of data from the jiang_data_for_jupyter_v12.nc file, available in this repository, calcuate the global array of etamax for the year 2010, and plot a map of the results<br>
+In this example we will read global arrays of data from the jiang_data_for_jupyter_v12.nc file, available in this repository, calcuate the global array of ηmax for the year 2010, and plot a map of the results<br>
 ```
 import numpy as np
 import xarray as xr
