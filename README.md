@@ -22,7 +22,7 @@ Next import the f_dTA and etamax functions as follows in your notebook or python
 from PyOAE import f_dTA, etamax
 ```
 
-As an alternative to the commands above, you can download PyOAE.py from this github repository (https://github.com/gjpelletier/PyOAE) and copy and paste both functions into your own project.<br>
+As an alternative to the commands above, you can download PyOAE.py from this github repository (https://github.com/gjpelletier/PyOAE) and copy and paste the functions into your own project.<br>
 
 # Example use of the root-finding method to analyze the OAE needed to restore OA indicators to pre-industrial conditions
 
