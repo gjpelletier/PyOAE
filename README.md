@@ -125,6 +125,7 @@ cbar.set_label(r'$\Delta$TA needed to restore TA-DIC to PI $\mu$mol/kg')
 plt.savefig('OAE_needed_for_OA_in_CCE.png', format='png')
 ```
 ![OAE_needed_for_OA_in_CCE](https://github.com/user-attachments/assets/ebe2b86e-8184-4887-9378-ecd657b69f83)
+
 Figure 1. The amount of OAE needed in the coastal California Current Ecosystem to restore the TA-DIC in 2010 to pre-industrial conditions, assuming that NaOH is used for OAE, and the CDR efficiency is 80%.
 
 # Example use of etamax for a global data set
@@ -161,6 +162,7 @@ plt.savefig('etamax_2010.png', format='png', dpi=300)
 plt.show()
 ```
 ![etamax_2010](https://github.com/user-attachments/assets/fc58b293-9e57-4c1b-bfb9-9024e974f66f)
+
 Figure 2. Values of the maximum theoretical OAE efficiency ηmax for the global oceans based on data from Jiang et al (2023) for a ∆TA perturbation of 1 umol/kg
 
 
