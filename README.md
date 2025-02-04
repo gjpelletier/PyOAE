@@ -12,7 +12,7 @@ The PyOAE package requires that you have already installed numpy, scipy, and PyC
 
 # Installation for Python or Jupyter Notebook
 
-First, if you have not already installed PyOAE, install PyOAE as follows with pip or !pip in your notebook or terminal:<br>
+First, if you have not already done so, install PyOAE as follows with pip or !pip in your notebook or terminal:<br>
 ```
 pip install git+https://github.com/gjpelletier/PyOAE.git
 ```
