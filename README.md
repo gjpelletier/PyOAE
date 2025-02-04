@@ -128,7 +128,7 @@ plt.savefig('OAE_needed_for_OA_in_CCE.png', format='png')
 
 Figure 1. The amount of OAE needed in the coastal California Current Ecosystem to restore the TA-DIC in 2010 to pre-industrial conditions, assuming that NaOH is used for OAE, and the CDR efficiency is 80%.
 
-# Example use of etamax for a global data set
+# Example use of the etamax function to analyze the OAE efficiency in the global oceans
 
 In this example we will read global arrays of surface ocean chemistry data in 2010 from the jiang_data_for_jupyter_v12.nc file, available in this repository, calculate the global array of ηmax for the year 2010, and plot a map of the results. The Jupyter Notebooks available at this repository provide examples of additional analysis of ηmax, and citations for the sources of the ocean chemistry data provided in the example netcdf file.<br>
 ```
