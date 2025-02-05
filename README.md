@@ -140,16 +140,18 @@ from PyOAE import etamax
 ds = xr.open_dataset("jiang_data_for_jupyter_v12.nc", chunks={"lon":0})
 ds_dict = {var: ds[var].values for var in ds.data_vars}
 # extract the global arrays of chemistry data from the year 2010
-TA_ctl = ds_dict["talk_2010"]  # TA (umol/kg)
-DIC_ctl = ds_dict["dic_2010"]  # DIC (umol/kg)
-SiO3_ctl = ds_dict["sio3"]    # SiO3 (umol/kg)
-PO4_ctl = ds_dict["po4"]    # PO4 (umol/kg)
-Temp_ctl = ds_dict["temp_2010"]    # temperatre (degC)
-Sal_ctl = ds_dict["sal_2010"]    # salinity (psu)
-Pres_ctl = np.zeros((180, 360))  # pressure (dbar)
+kwargs = dict(
+    TA_ctl = ds_dict["talk_2010"],    # TA (umol/kg)
+    DIC_ctl = ds_dict["dic_2010"],    # DIC (umol/kg)
+    SiO3_ctl = ds_dict["sio3"],       # SiO3 (umol/kg)
+    PO4_ctl = ds_dict["po4"],         # PO4 (umol/kg)
+    Temp_ctl = ds_dict["temp_2010"],  # temperatre (degC)
+    Sal_ctl = ds_dict["sal_2010"],    # salinity (psu)
+    Pres_ctl = np.zeros((180, 360))   # pressure (dbar)
+)
 dTA = 1    # assumed amount of added alkalinity by OAE (umol/kg)
 # calculate the etamax for the dTA in all grid cells of the global array
-result = etamax(dTA,TA_ctl,DIC_ctl,SiO3_ctl,PO4_ctl,Temp_ctl,Sal_ctl,Pres_ctl)
+result = etamax(dTA,**kwargs)
 etamax = result["etamax"]
 # plot a map of the results
 plt.figure(figsize=(8, 5))  # Set the figure size (width, height)
