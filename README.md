@@ -83,8 +83,8 @@ for i, j in np.ndindex((180,360)):
         if nnn_pi==7 and nnn_ctl==7:
             f_x = lambda x: f_dTA(x, **kwargs)
             root = opt.brentq(f_x, x_upr, x_lwr)
-            print("i: %.0f, j: %.0f, root: %.4f" % (i,j,root))
             ds_dict["dTA_root"][i,j] = root
+            print("i: %.0f, j: %.0f, root: %.4f" % (i,j,root))
 ```
 
 Next we will make a map showing the results:
