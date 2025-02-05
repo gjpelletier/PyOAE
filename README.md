@@ -163,11 +163,118 @@ plt.yticks([])
 plt.savefig('etamax_2010.png', format='png', dpi=300)
 plt.show()
 ```
-![etamax_2010](https://github.com/user-attachments/assets/fc58b293-9e57-4c1b-bfb9-9024e974f66f)
+![etamax_2010](https://github.com/user-attachments/assets/ae40e53c-3c01-46c8-87a8-ffa209a2ad6f)
 
 Figure 2. Values of the maximum theoretical OAE efficiency ηmax for the global oceans based on data from Jiang et al (2023) for a ∆TA perturbation of 1 umol/kg
 
+# Example sensitivity of etamax to the assumed amount of OAE addition of TA
 
+In this example we will look at the difference in ηmax to the assumed amount of added alkalinity ∆TA (umol/kg). We will show the difference between ηmax assuming the ∆TA = 1 umol/kg, compared with ηmax assuming ∆TA = 100 umol/kg. 
+
+```
+import numpy as np
+import xarray as xr
+import matplotlib.pyplot as plt
+from PyOAE import etamax
+# read the global arrays of surface ocean data and assign to a dictionary
+ds = xr.open_dataset("jiang_data_for_jupyter_v12.nc", chunks={"lon":0})
+ds_dict = {var: ds[var].values for var in ds.data_vars}
+# extract the global arrays of chemistry data from the year 2010
+kwargs = dict(
+    TA_ctl = ds_dict["talk_2010"],    # TA (umol/kg)
+    DIC_ctl = ds_dict["dic_2010"],    # DIC (umol/kg)
+    SiO3_ctl = ds_dict["sio3"],       # SiO3 (umol/kg)
+    PO4_ctl = ds_dict["po4"],         # PO4 (umol/kg)
+    Temp_ctl = ds_dict["temp_2010"],  # temperatre (degC)
+    Sal_ctl = ds_dict["sal_2010"],    # salinity (psu)
+    Pres_ctl = np.zeros((180, 360))   # pressure (dbar)
+)
+# calculate the etamax for the dTA=1 and dTA=100 in all grid cells of the global array
+result_dTA1 = etamax(1,**kwargs)
+result_dTA100 = etamax(100,**kwargs)
+etamax_dTA1 = result_dTA1["etamax"]
+etamax_dTA100 = result_dTA100["etamax"]
+# calculate difference between etamax at dTA=1 vs dTA=100
+etamax_difference = etamax_dTA100 - etamax_dTA1
+# plot a map of the results
+plt.figure(figsize=(8, 5))  # Set the figure size (width, height)
+plt.imshow(np.flipud(etamax_difference), cmap='viridis', interpolation='none')
+plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
+plt.title(r'Figure 3. Difference $\Delta\eta$max between $\Delta$TA 100 vs 1 umol/kg')
+plt.xticks([])
+plt.yticks([])
+plt.savefig('etamax_sensitivity_to_dTA.png', format='png', dpi=300)
+plt.show()
+```
+![etamax_sensitivity_to_dTA](https://github.com/user-attachments/assets/3e54a89d-d621-4be3-9cb0-80ecef264645)
+
+Figure 3. Difference in ηmax comparing ∆TA perturbation of 100 umol/kg vs ∆TA perturbation of 1 umol/kg. 
+
+# Example using different constants with PyCO2SYS
+
+The PyOAE functions use the PyCO2SYS package for the calculation of carbonate system variables. PyOAE uses default constants for the pH scale (total), carbonic acid of Lueker et al. (2000), bisulfate (HSO4−) of Dickson (1990), hydrofluoric acid (HF) of Perez and Fraga (1987), and the total borate content of Lee et al. (2010).
+
+PyOAE allows the user to specify different constants using optional keyword arguments in "kwargs", using the same as keywords that are described in the PyCO2SYS documentation (https://github.com/mvdh7/PyCO2SYS) as follows:
+
+- opt_pH_scale (Choice of pH scale, default=1)
+- opt_k_carbonic (Choice of H2CO3 and HCO3- dissociation constants, default =10)
+- opt_k_bisulfate (Choice of HSO4- dissociation constant KSO4, default=1)
+- opt_total_borate (Choice of boron:sal, default=2)
+- opt_k_fluoride (Choice of hydrogen fluoride dissociation constant, default=2)
+
+Below is an example showing the sensitivity of etamax, with a perturbation ∆TA=1 umol/kg, for the following different dissociation constants for carbonic acid:
+
+- Scenario 1: opt_k_carbonic=10 (default using Lueker et al 2000)
+- Scenario 2: opt_k_carbonic=4 (refit of Mehrbach 1973 by Dickson and Millero 1987)
+
+```
+import numpy as np
+import xarray as xr
+import matplotlib.pyplot as plt
+from PyOAE import etamax
+# read the global arrays of surface ocean data and assign to a dictionary
+ds = xr.open_dataset("jiang_data_for_jupyter_v12.nc", chunks={"lon":0})
+ds_dict = {var: ds[var].values for var in ds.data_vars}
+# extract the global arrays of chemistry data from the year 2010
+kwargs_scen1 = dict(
+    TA_ctl = ds_dict["talk_2010"],    # TA (umol/kg)
+    DIC_ctl = ds_dict["dic_2010"],    # DIC (umol/kg)
+    SiO3_ctl = ds_dict["sio3"],       # SiO3 (umol/kg)
+    PO4_ctl = ds_dict["po4"],         # PO4 (umol/kg)
+    Temp_ctl = ds_dict["temp_2010"],  # temperatre (degC)
+    Sal_ctl = ds_dict["sal_2010"],    # salinity (psu)
+    Pres_ctl = np.zeros((180, 360))   # pressure (dbar)
+)
+kwargs_scen2 = dict(
+    TA_ctl = ds_dict["talk_2010"],    # TA (umol/kg)
+    DIC_ctl = ds_dict["dic_2010"],    # DIC (umol/kg)
+    SiO3_ctl = ds_dict["sio3"],       # SiO3 (umol/kg)
+    PO4_ctl = ds_dict["po4"],         # PO4 (umol/kg)
+    Temp_ctl = ds_dict["temp_2010"],  # temperatre (degC)
+    Sal_ctl = ds_dict["sal_2010"],    # salinity (psu)
+    Pres_ctl = np.zeros((180, 360)),   # pressure (dbar)
+    opt_k_carbonic = 4                # refit of Mehrbach 1973 by Dicskon and Millero 1987
+)
+# calculate the etamax for the dTA=1 and dTA=100 in all grid cells of the global array
+result_scen1 = etamax(1,**kwargs_scen1)
+result_scen2 = etamax(1,**kwargs_scen2)
+etamax_scen1 = result_scen1["etamax"]
+etamax_scen2 = result_scen2["etamax"]
+# calculate difference between etamax between Scenario 1 and 2
+etamax_difference = etamax_scen2 - etamax_scen1
+# plot a map of the results
+plt.figure(figsize=(8, 5))  # Set the figure size (width, height)
+plt.imshow(np.flipud(etamax_difference), cmap='viridis', interpolation='none')
+plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
+plt.title(r'Figure 4. Difference $\Delta\eta$max comparing opt_k_carbonic = 4 vs 10')
+plt.xticks([])
+plt.yticks([])
+plt.savefig('etamax_sensitivity_to_K1K2.png', format='png', dpi=300)
+plt.show()
+```
+![etamax_sensitivity_to_K1K2](https://github.com/user-attachments/assets/d69deae9-bc96-415e-b7da-4eba695a6c72)
+
+Figure 4. Difference in ηmax, with a ∆TA perturbation of 1 umol/kg, comparing two options for the dissociation constants for carbonic acid (option 4= refit of Mehrbach 1973 by Dickson and Millero 1987, option 10= Lueker et 2000)
 
 
 
