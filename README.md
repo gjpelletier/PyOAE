@@ -208,7 +208,7 @@ plt.show()
 ```
 ![etamax_sensitivity_to_dTA](https://github.com/user-attachments/assets/3e54a89d-d621-4be3-9cb0-80ecef264645)
 
-Figure 3. Difference in ηmax comparing ∆TA perturbation of 100 umol/kg vs ∆TA perturbation of 1 umol/kg. 
+Figure 3. Difference in ηmax comparing ∆TA = 100 umol/kg vs ∆TA = 1 umol/kg. 
 
 # Example sensitivity of ηmax to different dissociation constants for carbonic acid with PyCO2SYS
 
@@ -222,7 +222,7 @@ PyOAE allows the user to specify different constants using optional keyword argu
 - opt_total_borate (Choice of boron:sal, default=2)
 - opt_k_fluoride (Choice of hydrogen fluoride dissociation constant, default=2)
 
-Below is an example showing the sensitivity of etamax, with a perturbation ∆TA=1 umol/kg, for the following different dissociation constants for carbonic acid:
+Below is an example showing the sensitivity of etamax, with ∆TA=1 umol/kg, for the following different dissociation constants for carbonic acid:
 
 - Scenario 1: opt_k_carbonic=10 (default using Lueker et al 2000)
 - Scenario 2: opt_k_carbonic=4 (refit of Mehrbach 1973 by Dickson and Millero 1987)
