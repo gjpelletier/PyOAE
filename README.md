@@ -167,7 +167,7 @@ plt.show()
 
 Figure 2. Values of the maximum theoretical OAE efficiency ηmax for the global oceans based on data from Jiang et al (2023) for a ∆TA perturbation of 1 umol/kg
 
-# Example sensitivity of etamax to the assumed amount of OAE addition of TA
+# Example sensitivity of ηmax to the assumed amount of OAE addition of TA
 
 In this example we will look at the difference in ηmax to the assumed amount of added alkalinity ∆TA (umol/kg). We will show the difference between ηmax assuming the ∆TA = 1 umol/kg, compared with ηmax assuming ∆TA = 100 umol/kg. 
 
@@ -210,7 +210,7 @@ plt.show()
 
 Figure 3. Difference in ηmax comparing ∆TA perturbation of 100 umol/kg vs ∆TA perturbation of 1 umol/kg. 
 
-# Example using different constants with PyCO2SYS
+# Example sensitivity of ηmax to different dissociation constants for carbonic acid with PyCO2SYS
 
 The PyOAE functions use the PyCO2SYS package for the calculation of carbonate system variables. PyOAE uses default constants for the pH scale (total), carbonic acid of Lueker et al. (2000), bisulfate (HSO4−) of Dickson (1990), hydrofluoric acid (HF) of Perez and Fraga (1987), and the total borate content of Lee et al. (2010).
 
