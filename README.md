@@ -222,10 +222,10 @@ PyOAE allows the user to specify different constants using optional keyword argu
 - opt_total_borate (Choice of boron:sal, default=2)
 - opt_k_fluoride (Choice of hydrogen fluoride dissociation constant, default=2)
 
-Below is an example showing the sensitivity of etamax, with ∆TA=1 umol/kg, for the following different dissociation constants for carbonic acid:
+Below is an example showing the sensitivity of ηmax, with ∆TA=1 umol/kg, for the following different dissociation constants for carbonic acid:
 
-- Scenario 1: opt_k_carbonic=10 (default using Lueker et al 2000)
-- Scenario 2: opt_k_carbonic=4 (refit of Mehrbach 1973 by Dickson and Millero 1987)
+- Option 1: opt_k_carbonic=10 (default using Lueker et al 2000)
+- Option 2: opt_k_carbonic=4 (refit of Mehrbach 1973 by Dickson and Millero 1987)
 
 ```
 import numpy as np
@@ -236,7 +236,7 @@ from PyOAE import etamax
 ds = xr.open_dataset("jiang_data_for_jupyter_v12.nc", chunks={"lon":0})
 ds_dict = {var: ds[var].values for var in ds.data_vars}
 # extract the global arrays of chemistry data from the year 2010
-kwargs_scen1 = dict(
+kwargs_opt1 = dict(
     TA_ctl = ds_dict["talk_2010"],    # TA (umol/kg)
     DIC_ctl = ds_dict["dic_2010"],    # DIC (umol/kg)
     SiO3_ctl = ds_dict["sio3"],       # SiO3 (umol/kg)
@@ -245,7 +245,7 @@ kwargs_scen1 = dict(
     Sal_ctl = ds_dict["sal_2010"],    # salinity (psu)
     Pres_ctl = np.zeros((180, 360))   # pressure (dbar)
 )
-kwargs_scen2 = dict(
+kwargs_opt2 = dict(
     TA_ctl = ds_dict["talk_2010"],    # TA (umol/kg)
     DIC_ctl = ds_dict["dic_2010"],    # DIC (umol/kg)
     SiO3_ctl = ds_dict["sio3"],       # SiO3 (umol/kg)
@@ -256,12 +256,12 @@ kwargs_scen2 = dict(
     opt_k_carbonic = 4                # refit of Mehrbach 1973 by Dicskon and Millero 1987
 )
 # calculate the etamax for the dTA=1 and dTA=100 in all grid cells of the global array
-result_scen1 = etamax(1,**kwargs_scen1)
-result_scen2 = etamax(1,**kwargs_scen2)
-etamax_scen1 = result_scen1["etamax"]
-etamax_scen2 = result_scen2["etamax"]
-# calculate difference between etamax between Scenario 1 and 2
-etamax_difference = etamax_scen2 - etamax_scen1
+result_opt1 = etamax(1,**kwargs_opt1)
+result_opt2 = etamax(1,**kwargs_opt2)
+etamax_opt1 = result_opt1["etamax"]
+etamax_opt2 = result_opt2["etamax"]
+# calculate difference between etamax between Option 1 and 2
+etamax_difference = etamax_opt2 - etamax_opt1
 # plot a map of the results
 plt.figure(figsize=(8, 5))  # Set the figure size (width, height)
 plt.imshow(np.flipud(etamax_difference), cmap='viridis', interpolation='none')
