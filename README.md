@@ -81,7 +81,7 @@ for i, j in np.ndindex((180,360)):
         nnn_pi = np.count_nonzero(~np.isnan(chem_pi))  # number of non-nan
         nnn_ctl = np.count_nonzero(~np.isnan(chem_ctl))  # number of non-nan
         if nnn_pi==7 and nnn_ctl==7:
-            f_x = lambda x: f_dTA(x, kwargs)
+            f_x = lambda x: f_dTA(x, **kwargs)
             root = opt.brentq(f_x, x_upr, x_lwr)
             print("i: %.0f, j: %.0f, root: %.4f" % (i,j,root))
             ds_dict["dTA_root"][i,j] = root
