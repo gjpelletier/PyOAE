@@ -3,7 +3,7 @@ Python tools for analysis of Ocean Alkalinity Enhancement
 
 by Greg Pelletier
 
-Tools for analysis of Ocean Alkalinity Enhancement (OAE), including Jupyter Notebooks for the following examples:
+Tools for analysis of Ocean Alkalinity Enhancement (OAE), including the following examples:
 
 - Root-finding method to solve for the OAE treatment needed to restore any carbonate system variable (e.g. TA-DIC, CO3--, pH, Ωara, Ωcal) to pre-industrial conditions in the coastal California Current Ecosystem. This notebook can also be used to solve for any other location in the global oceans
 - Calculation of the maximum hypothetical OAE efficiency ηmax (etamax) for any assumed addition of alkalinity. The ηmax is a dimensionless quantity that is the hypothetical maximum potential CDR (umol/kg) divided by the amount of added alkalinity (umol/kg).
