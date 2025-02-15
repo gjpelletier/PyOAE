@@ -7,8 +7,8 @@ Tools for analysis of Ocean Alkalinity Enhancement (OAE), including the followin
 
 - Root-finding method to solve for the OAE treatment needed to restore any carbonate system variable (e.g. TA-DIC, CO3--, pH, Ωara, Ωcal) to pre-industrial conditions in the coastal California Current Ecosystem. This notebook can also be used to solve for any other location in the global oceans
 - Calculation of the maximum hypothetical OAE efficiency ηmax (etamax) for any assumed addition of alkalinity. The ηmax is a dimensionless quantity that is the hypothetical maximum potential CDR (umol/kg) divided by the amount of added alkalinity (umol/kg).
-- Calcuation of the biological component of DIC called "DICbio". The surface ocean DIC concentration is influenced by air–sea gas exchange, the biological production/consumption of organic matter, and calcium carbonate (CaCO3) formation/dissolution (Burt et al, 2016). To isolate the biological component of DIC, a surface DIC concentration at atmospheric equilibrium is computed and subsequently removed from the observed DIC (DICobs), such that DICbio = DICobs - DICatm
-- Sine-regression function to model variables with regularly repeating periodic cycles, such as DICbio
+- Calcuation of the biological component of DIC. The observed surface ocean DIC concentration (DICobs) is influenced by air–sea gas exchange, the biological production/consumption of organic matter, and calcium carbonate (CaCO3) formation/dissolution (Burt et al, 2016). To isolate the biological component of DIC (DICbio), a surface DIC concentration at atmospheric equilibrium (DICatm) is computed and subsequently removed from the observed DIC (DICobs), such that DICbio = DICobs - DICatm
+- A sine-regression function to model time-series of variables with regularly repeating periodic cycles (e.g. DICbio)
 
 
 The PyOAE package requires that you have already installed numpy, scipy, and PyCO2SYS packages. We also recommend that you have installed xarray, cartopy, and matplotlib to analyze and plot maps using data from netcdf files.
