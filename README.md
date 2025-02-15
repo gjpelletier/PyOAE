@@ -7,6 +7,9 @@ Tools for analysis of Ocean Alkalinity Enhancement (OAE), including the followin
 
 - Root-finding method to solve for the OAE treatment needed to restore any carbonate system variable (e.g. TA-DIC, CO3--, pH, Ωara, Ωcal) to pre-industrial conditions in the coastal California Current Ecosystem. This notebook can also be used to solve for any other location in the global oceans
 - Calculation of the maximum hypothetical OAE efficiency ηmax (etamax) for any assumed addition of alkalinity. The ηmax is a dimensionless quantity that is the hypothetical maximum potential CDR (umol/kg) divided by the amount of added alkalinity (umol/kg).
+- Calcuation of the biological component of DIC. The surface ocean DIC concentration is influenced by air–sea gas exchange, the biological production/consumption of organic matter, and calcium carbonate (CaCO3) formation/dissolution (Burt et al, 2016). To isolate the biological component of DIC, a surface DIC concentration at atmospheric equilibrium is computed and subsequently removed from the observed DIC (DICobs).
+- Sine-regression functions to model variables with periodic annual cycles, such as DICbio
+
 
 The PyOAE package requires that you have already installed numpy, scipy, and PyCO2SYS packages. We also recommend that you have installed xarray, cartopy, and matplotlib to analyze and plot maps using data from netcdf files.
 
@@ -19,7 +22,7 @@ pip install git+https://github.com/gjpelletier/PyOAE.git
 
 Next import the f_dTA and etamax functions as follows in your notebook or python code:<br>
 ```
-from PyOAE import f_dTA, etamax
+from PyOAE import f_dTA, etamax, dic_bio, sine_fit
 ```
 
 As an alternative to the commands above, you can download PyOAE.py from this github repository (https://github.com/gjpelletier/PyOAE) and copy and paste the functions into your own project.<br>
