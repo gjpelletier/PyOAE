@@ -5,7 +5,7 @@ by Greg Pelletier
 
 Tools for analysis of Ocean Alkalinity Enhancement (OAE), including the following examples:
 
-- **f_dTA** - Root-finding method to solve for the OAE treatment needed to restore any carbonate system variable (e.g. TA-DIC, CO3--, pH, Ωara, Ωcal) to pre-industrial conditions in the coastal California Current Ecosystem. This notebook can also be used to solve for any other location in the global oceans
+- **f_dTA** - Root-finding method to solve for the OAE treatment needed to restore any carbonate system variable (e.g. TA-DIC, CO3--, pH, Ωara, Ωcal) to pre-industrial conditions in the global oceans or any selected region.
 - **etamax** - Calculation of the maximum hypothetical OAE efficiency ηmax (etamax) for any assumed addition of alkalinity. The ηmax is a dimensionless quantity that is the hypothetical maximum potential CDR (umol/kg) divided by the amount of added alkalinity (umol/kg).
 - **dic_bio** - Calcuation of the biological component of DIC. The observed surface ocean DIC concentration (DICobs) is influenced by air–sea gas exchange, the biological production/consumption of organic matter, and calcium carbonate (CaCO3) formation/dissolution (Burt et al, 2016). To isolate the biological component of DIC (DICbio), a surface DIC concentration at atmospheric equilibrium (DICatm) is computed and subsequently removed from the observed DIC (DICobs), such that DICbio = DICobs - DICatm
 - **sine_fit** - A sine-regression function to model time-series of variables with regularly repeating periodic cycles (e.g. DICbio)
