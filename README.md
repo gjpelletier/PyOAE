@@ -332,6 +332,7 @@ References:
 In the following code block we loop through all of the grid cells in the global oceans to do the analysis. This takes about 45 minutes to calculate the monthly DICbio in each grid cell from 1982-2022, and solve for the best fit sine-regression model in each grid cell 
 
 ```
+# Note: time index 0:468 is the range of 1982-2020 data in pco2atm from SeaFlux v2021
 import numpy as np
 import xarray as xr
 import matplotlib.pyplot as plt
@@ -362,14 +363,13 @@ for i in range(ds_dict["talk"].shape[2]):
     print("dic_bio computed at lon %.1f degE" % (i+0.5))
     for j in range(ds_dict["talk"].shape[1]):
         kwargs = {
-            'alkalinity': ds_dict["talk"][:,j,i],
-            'dic': ds_dict["dic"][:,j,i],
-            'pco2atm': ds_dict["fco2atm"][:,j,i],
-            'pco2atm_type': 5,  # The second parameter 4=pCO2, 5=fCO2
-            'total_silicate': ds_dict["sio3"][:,j,i],
-            'total_phosphate': ds_dict["po4"][:,j,i],
-            'temperature': ds_dict["temperature"][:,j,i],
-            'salinity': ds_dict["salinity"][:,j,i],
+            'alkalinity': ds_dict["talk"][0:468,j,i],
+            'dic': ds_dict["dic"][0:468,j,i],
+            'pco2atm': ds_dict["pco2atm"][0:468,j,i],
+            'total_silicate': ds_dict["sio3"][0:468,j,i],
+            'total_phosphate': ds_dict["po4"][0:468,j,i],
+            'temperature': ds_dict["temperature"][0:468,j,i],
+            'salinity': ds_dict["salinity"][0:468,j,i],
             'total_pressure': 0,
             'opt_pH_scale': 1,  # pH scale (1= total scale)
             'opt_k_carbonic': 10,  # Choice of H2CO3 and HCO3- K1 and K2 (10= Lueker et al 2000)
@@ -389,11 +389,11 @@ for i in range(ds_dict["talk"].shape[2]):
             nnn_talk==nnn_po4 and nnn_talk==nnn_temp and nnn_talk==nnn_sal and nnn_talk > 0):
             # solve for dic_bio = dic_obs - dic_atm
             result_1 = dic_bio(**kwargs)
-            ds_dict["dic_atm"][:,j,i]= result_1["dic_atm"]
-            ds_dict["dic_bio"][:,j,i] = result_1["dic_bio"]
+            ds_dict["dic_atm"][0:468,j,i]= result_1["dic_atm"]
+            ds_dict["dic_bio"][0:468,j,i] = result_1["dic_bio"]
             # solve for dic_bio vs time sine-regression mean, amplitude, phase, rmse, y_fit
-            result_2 = sine_fit(ds_dict["yearfrac"],result_1["dic_bio"])  
-            ds_dict["dic_bio_fit"][:,j,i]= result_2["y_fit"]
+            result_2 = sine_fit(ds_dict["yearfrac"][0:468],result_1["dic_bio"])  
+            ds_dict["dic_bio_fit"][0:468,j,i]= result_2["y_fit"]
             ds_dict["dic_bio_mean"][j,i]= result_2["mean"]
             ds_dict["dic_bio_amplitude"][j,i]= result_2["amplitude"]
             ds_dict["dic_bio_phase"][j,i]= result_2["phase"]
@@ -419,10 +419,10 @@ plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
 plt.title(r'Figure 5. Mean DICbio umol/kg')
 plt.xticks([])
 plt.yticks([])
-plt.savefig('Fig5_map_of_DICbio_mean_using_fco2atm_as_fco2.png', format='png', dpi=300)
+plt.savefig('Fig5_map_of_DICbio_mean_using_pco2atm_as_pco2.png', format='png', dpi=300)
 plt.show()
 ```
-![Fig5_map_of_DICbio_mean_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/8675440f-d0bb-4bdc-a361-974abfaab667)
+![Fig5_map_of_DICbio_mean_using_pco2atm_as_pcco2](https://github.com/user-attachments/assets/deba6e89-2405-4c9f-939f-ab98c39c2ce9)
 
 Next we will make a map showing the results of the regression estimate of the amplitude of DICbio. Note that the amplitude represents half of the distance from the peak to the trough of each seasonal cycle. Therefore the amplitude is half of the annual range of DICbio
 
@@ -439,10 +439,10 @@ plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
 plt.title(r'Figure 6. Amplitude of DICbio umol/kg')
 plt.xticks([])
 plt.yticks([])
-plt.savefig('Fig6_map_of_DICbio_amplitude_using_fco2atm_as_fco2.png', format='png', dpi=300)
+plt.savefig('Fig6_map_of_DICbio_amplitude_using_pco2atm_as_pco2.png', format='png', dpi=300)
 plt.show()
 ```
-![Fig6_map_of_DICbio_amplitude_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/0a4d4608-eaf4-4d40-95ac-0fb90f0951bf)
+![Fig6_map_of_DICbio_amplitude_using_pco2atm_as_pcco2](https://github.com/user-attachments/assets/403ba887-0aec-4c26-ba43-597df521e072)
 
 Next we will make a map showing the p-values of the sine-regressions. Most of the grid cells have statistically signficant regressions (p<0.05) shown in blue
 
@@ -463,10 +463,10 @@ plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
 plt.title(r'Figure 7. p-value of DICbio sine-regressions')
 plt.xticks([])
 plt.yticks([])
-plt.savefig('Fig7_map_of_DICbio_pvalue_using_fco2atm_as_fco2.png', format='png', dpi=300)
+plt.savefig('Fig7_map_of_DICbio_pvalue_using_pco2atm_as_pco2.png', format='png', dpi=300)
 plt.show()
 ```
-![Fig7_map_of_DICbio_pvalue_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/4e816705-bba1-4d87-a185-00e608f9da92)
+![Fig7_map_of_DICbio_pvalue_using_pco2atm_as_pcco2](https://github.com/user-attachments/assets/fda7edb1-e262-4f56-ac4b-2c5b6abb4510)
 
 Next, we will make a map showing the adjusted r^2 values for the regressions in each grid cell. Note that the r^2 values tend to be greater in areas that have the largest amplitudes. In other words, the regressions are best in areas where there is the greatest biogeochemical effect in DICbio
 
@@ -487,10 +487,10 @@ plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
 plt.title(r'Figure 8. Adjusted R-squared of DICbio sine-regressions')
 plt.xticks([])
 plt.yticks([])
-plt.savefig('Fig8_map_of_DICbio_rsquared_using_fco2atm_as_fco2.png', format='png', dpi=300)
+plt.savefig('Fig8_map_of_DICbio_rsquared_using_pco2atm_as_pco2.png', format='png', dpi=300)
 plt.show()
 ```
-![Fig8_map_of_DICbio_rsquared_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/bd5d36dd-8e8d-4ff4-a567-281c547cfc6f)
+![Fig8_map_of_DICbio_rsquared_using_pco2atm_as_pcco2](https://github.com/user-attachments/assets/b693ab13-dd37-4cca-8378-0a7c598f818b)
 
 Finally, we will show the time series of DICobs, DICatm, and DICbio at a selected location in the coastal California Current Ecosystem near the Columbia River
 
@@ -537,9 +537,9 @@ ax['B'].set_ylim(-20, 40)
 ax['B'].text(1983, -17.5, 'Mean: '+f"{ds_dict["dic_bio_mean"][j,i]:.1f}"+', Amplitude: '+f"{ds_dict["dic_bio_amplitude"][j,i]:.1f}"+', RMSE: '+f"{ds_dict["dic_bio_rmse"][j,i]:.1f}"+' umol/kg',
         fontsize=10, color='black', ha='left', va='center')
 ax['B'].axhline(y=0, color='k', linestyle=':')
-fig.savefig('Fig9_DICobs_DICatm_DICbio_at_ColumbiaRiver_1982_2020_fco2atm_as_fco2.png', format='png');
+fig.savefig('Fig9_DICobs_DICatm_DICbio_at_ColumbiaRiver_1982_2020_pco2atm_as_pco2.png', format='png');
 ```
-![Fig9_DICobs_DICatm_DICbio_at_ColumbiaRiver_1982_2020_fco2atm_as_fco2](https://github.com/user-attachments/assets/fef6ddbb-454a-476d-a7d8-e0995b692b93)
+![Fig9_DICobs_DICatm_DICbio_at_ColumbiaRiver_1982_2020_pco2atm_as_pco2](https://github.com/user-attachments/assets/3015598c-3c5b-4c16-afd0-f2e03ff856f4)
 
 Figure 9. DICobs, DICatm, and DICbio at a coastal location in the California Current Ecosystem near the Columbia River from 1982-2020. **a)** Observed DIC (DICobs), and the hypothetical DIC (DICatm) that would be in equilibrium with atmospheric pCO2 and observed TA. **b)** DICbio calculated from DICobs-DICatm, and the regression estimate of DICbio from the sine regression.
 
