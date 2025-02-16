@@ -424,7 +424,7 @@ plt.show()
 ```
 ![Fig5_map_of_DICbio_mean_using_pco2atm_as_pcco2](https://github.com/user-attachments/assets/deba6e89-2405-4c9f-939f-ab98c39c2ce9)
 
-Next we will make a map showing the results of the regression estimate of the amplitude of DICbio. Note that the amplitude represents half of the distance from the peak to the trough of each seasonal cycle. Therefore the amplitude is half of the annual range of DICbio
+Next we will make a map showing the results of the regression estimate of the amplitude of DICbio. Note that the amplitude represents half of the distance from the peak to the trough of each annual cycle. Therefore the amplitude is half of the annual range of DICbio
 
 ```
 # plot a map
