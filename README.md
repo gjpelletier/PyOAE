@@ -402,7 +402,7 @@ for i in range(ds_dict["talk"].shape[2]):
             ds_dict["dic_bio_pvalue"][j,i]= result_2["pvalue"]
 ```
 
-Next we will make a map showing the results for the regression estimate of the mean DICbio
+Next we will make a map showing the results for the regression estimate of the mean DICbio. Positive values, shown in red, indicate that DICobs > DICatm. Negative values, shown in blue, indicate that DICobs < DICatm.
 
 ```
 from matplotlib.colors import TwoSlopeNorm
@@ -444,7 +444,7 @@ plt.show()
 ```
 ![Fig6_map_of_DICbio_amplitude_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/0a4d4608-eaf4-4d40-95ac-0fb90f0951bf)
 
-Next we will make a map showing the p-values of the sine-regressions. Most of the grid cells have statistically signficant regressions (p<0.05)
+Next we will make a map showing the p-values of the sine-regressions. Most of the grid cells have statistically signficant regressions (p<0.05) shown in blue
 
 ```
 # plot a map
@@ -541,7 +541,7 @@ fig.savefig('Fig9_DICobs_DICatm_DICbio_at_ColumbiaRiver_1982_2020_fco2atm_as_fco
 ```
 ![Fig9_DICobs_DICatm_DICbio_at_ColumbiaRiver_1982_2020_fco2atm_as_fco2](https://github.com/user-attachments/assets/fef6ddbb-454a-476d-a7d8-e0995b692b93)
 
-
+Figure 9. DICobs, DICatm, and DICbio at a coastal location in the California Current Ecosystem near the Columbia River from 1982-2020. **a)** Observed DIC (DICobs), and the hypothetical DIC (DICatm) that would be in equilibrium with atmospheric pCO2 and observed TA. **b)** DICbio calculated from DICobs-DICatm, and the regression estimate of DICbio from the sine regression.
 
 
 
