@@ -279,6 +279,277 @@ plt.show()
 
 Figure 4. Difference in ηmax, with a ∆TA perturbation of 1 umol/kg, comparing two options for the dissociation constants for carbonic acid (option 4= refit of Mehrbach 1973 by Dickson and Millero 1987, option 10= Lueker et 2000)
 
+# Example calculation of the biological compoment of DIC in the global oceans
+
+The surface water DIC concentration of a given water mass is altered by air–sea gas exchange, the biological production/consumption of organic matter, and calcium carbonate (CaCO3) formation/dissolution (Burt et al, 2016). To isolate the biological component of DIC, a surface DIC concentration at atmospheric equilibrium is computed and subsequently removed from the observed DIC (DICobs). 
+
+We use the following equation to represent DICbio:
+
+DICbio = DICobs – DICatm				(eqn 1)
+
+
+where 
+
+- DICobs = observed DIC (OceanSODA-ETHZ)
+- DICatm = DIC at equilibrium with atmospheric pCO2 and observed TA
+
+We use the DIC reported in OceanSODA-ETHZ as the value of "DICobs" in each month at each grid
+cell from 1982-2022. Next, we calculate "DICatm" with PyCO2SYS using
+the atmospheric pCO2 from the SeaFlux data set, combined the observed
+TA from OceanSODA-ETHZ in each grid cell for each month from
+1982-2022. Therefore, "DICatm" represents the hypothetical DIC that
+would be in equilibrium with the atmospheric pCO2. Finally, we
+calculated the 1982-2022 monthly values of "DICbio" using eqn 1 as
+DICbio = DICobs - DICatm
+
+The repeating annual cycle of DICbio can be represented as a sine function of the following form:
+
+y = mean + amplitude * sin(2π * (x - phase) / period)	(eqn 2)
+
+where 
+
+- y = DICbio = DICobs – DICatm
+- x = time as decimal year fraction (1982-2022) 
+- mean = mean from sine-regression
+- amplitude = amplitude from sine-regression
+- phase = phase shift from sine-regression
+- period = assumed equal to 1 cycle per year
+
+PyOAE incudes functions (dic_bio and sine_fit) to calculate DICbio using eqn 1, and to find the optimum parameters of the sine-regression model in eqn 2. We solve for the best-fit values of the parameters in eqn 2 at each grid cell including the mean,
+amplitude, and phase of the sine function at each location. 
+
+In this example we use two netcdf files that we need to do the analysis, OceanSODA_ETHZ_for_PyOAE.nc and SeaFlux_for_PyOAE.nc, available to download at the following link:
+
+https://drive.google.com/drive/folders/1BGgVRk2Gf6mxNnX1Fxg0Q4GtZSAYMzef?usp=sharing
+
+We use the 1982-2022 monthly time series of DICbio as the observed "y" values in
+eqn 2 to estimate the best-fit parameters of eqn 2 at each location.
+
+References:
+- Clargo et al 2015 (https://doi.org/10.1016/j.marchem.2015.08.010)
+- Burt et al 2016 (https://doi.org/10.1002/lno.10243):
+
+In the following code block we loop through all of the grid cells in the global oceans to do the analysis. This takes about 45 minutes to calculate the monthly DICbio in each grid cell from 1982-2022, and solve for the best fit sine-regression model in each grid cell 
+
+```
+import numpy as np
+import xarray as xr
+import matplotlib.pyplot as plt
+from PyOAE import dic_bio, sine_fit
+# read the data into an xarray dataset
+ds1 = xr.open_dataset("OceanSODA_ETHZ_for_PyOAE.nc", chunks={"lon":0})
+ds2 = xr.open_dataset("SeaFlux_for_PyOAE.nc", chunks={"lon":0})
+# Convert ds1 to dictionary of numpy arrays for computations
+ds_dict = {var: ds1[var].values for var in ds1.data_vars}
+# append yearfrac,lon,lat,time,pco2atm,fco2atm to ds_dict
+ds_dict["yearfrac"] = ds1.yearfrac.values
+ds_dict["lon"] = ds1.lon.values
+ds_dict["lat"] = ds1.lat.values
+ds_dict["time"] = ds1.time.values
+ds_dict["pco2atm"] = ds2.pco2atm.values
+ds_dict["fco2atm"] = ds2.fco2atm.values
+# initialize new output arrays for ds_dict
+ds_dict["dic_atm"] = np.full_like(ds_dict["talk"], np.nan)
+ds_dict["dic_bio"] = np.full_like(ds_dict["talk"], np.nan)
+ds_dict["dic_bio_fit"] = np.full_like(ds_dict["talk"], np.nan)
+ds_dict["dic_bio_mean"] = np.full_like(ds_dict["lon"], np.nan)
+ds_dict["dic_bio_amplitude"] = np.full_like(ds_dict["lon"], np.nan)
+ds_dict["dic_bio_phase"] = np.full_like(ds_dict["lon"], np.nan)
+ds_dict["dic_bio_rmse"] = np.full_like(ds_dict["lon"], np.nan)
+ds_dict["dic_bio_adj_rsquared"] = np.full_like(ds_dict["lon"], np.nan)
+ds_dict["dic_bio_pvalue"] = np.full_like(ds_dict["lon"], np.nan)
+for i in range(ds_dict["talk"].shape[2]):
+    print("dic_bio computed at lon %.1f degE" % (i+0.5))
+    for j in range(ds_dict["talk"].shape[1]):
+        kwargs = {
+            'alkalinity': ds_dict["talk"][:,j,i],
+            'dic': ds_dict["dic"][:,j,i],
+            'pco2atm': ds_dict["fco2atm"][:,j,i],
+            'pco2atm_type': 5,  # The second parameter 4=pCO2, 5=fCO2
+            'total_silicate': ds_dict["sio3"][:,j,i],
+            'total_phosphate': ds_dict["po4"][:,j,i],
+            'temperature': ds_dict["temperature"][:,j,i],
+            'salinity': ds_dict["salinity"][:,j,i],
+            'total_pressure': 0,
+            'opt_pH_scale': 1,  # pH scale (1= total scale)
+            'opt_k_carbonic': 10,  # Choice of H2CO3 and HCO3- K1 and K2 (10= Lueker et al 2000)
+            'opt_k_bisulfate': 1,  # Choice of HSO4- dissociation constant KSO4 (1= Dickson)
+            'opt_total_borate': 1,  # Choice for boron:sal 
+            'opt_k_fluoride': 1   # Choice for fluoride
+            }
+        # nnn = number of non-nan values for each input variable to dic_bio         
+        nnn_talk = np.count_nonzero(~np.isnan(kwargs["alkalinity"]))  # number of non-nan
+        nnn_dic = np.count_nonzero(~np.isnan(kwargs["dic"]))  # number of non-nan
+        nnn_pco2atm = np.count_nonzero(~np.isnan(kwargs["pco2atm"]))  # number of non-nan
+        nnn_sio3 = np.count_nonzero(~np.isnan(kwargs["total_silicate"]))  # number of non-nan
+        nnn_po4 = np.count_nonzero(~np.isnan(kwargs["total_phosphate"]))  # number of non-nan
+        nnn_temp = np.count_nonzero(~np.isnan(kwargs["temperature"]))  # number of non-nan
+        nnn_sal = np.count_nonzero(~np.isnan(kwargs["salinity"]))  # number of non-nan
+        if (nnn_talk==nnn_dic and nnn_talk==nnn_pco2atm and nnn_talk==nnn_sio3 and 
+            nnn_talk==nnn_po4 and nnn_talk==nnn_temp and nnn_talk==nnn_sal and nnn_talk > 0):
+            # solve for dic_bio = dic_obs - dic_atm
+            result_1 = dic_bio(**kwargs)
+            ds_dict["dic_atm"][:,j,i]= result_1["dic_atm"]
+            ds_dict["dic_bio"][:,j,i] = result_1["dic_bio"]
+            # solve for dic_bio vs time sine-regression mean, amplitude, phase, rmse, y_fit
+            result_2 = sine_fit(ds_dict["yearfrac"],result_1["dic_bio"])  
+            ds_dict["dic_bio_fit"][:,j,i]= result_2["y_fit"]
+            ds_dict["dic_bio_mean"][j,i]= result_2["mean"]
+            ds_dict["dic_bio_amplitude"][j,i]= result_2["amplitude"]
+            ds_dict["dic_bio_phase"][j,i]= result_2["phase"]
+            ds_dict["dic_bio_rmse"][j,i]= result_2["rmse"]
+            ds_dict["dic_bio_adj_rsquared"][j,i]= result_2["adj_rsquared"]
+            ds_dict["dic_bio_pvalue"][j,i]= result_2["pvalue"]
+```
+
+Next we will make a map showing the results for the regression estimate of the mean DICbio
+
+```
+from matplotlib.colors import TwoSlopeNorm
+# plot a map
+plt.figure(figsize=(8, 5),dpi=150)  # Set the figure size (width, height)
+# Define the zero point
+vmin = np.nanpercentile(ds_dict['dic_bio_mean'],1)
+vmax = np.nanpercentile(ds_dict['dic_bio_mean'],99)
+vcenter = 0
+# Create a normalization instance
+norm = TwoSlopeNorm(vmin=vmin, vcenter=vcenter, vmax=vmax)
+plt.imshow(np.flipud(ds_dict['dic_bio_mean']), cmap='seismic', interpolation='none', norm=norm)
+plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
+plt.title(r'Figure 5. Mean DICbio umol/kg')
+plt.xticks([])
+plt.yticks([])
+plt.savefig('Fig5_map_of_DICbio_mean_using_fco2atm_as_fco2.png', format='png', dpi=300)
+plt.show()
+```
+![Fig5_map_of_DICbio_mean_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/8675440f-d0bb-4bdc-a361-974abfaab667)
+
+Next we will make a map showing the results of the regression estimate of the amplitude of DICbio. Note that the amplitude represents half of the distance from the peak to the trough of each seasonal cycle. Therefore the amplitude is half of the annual range of DICbio
+
+```
+# plot a map
+X = ds_dict['lon']
+Y = ds_dict['lat']
+Z = np.flipud(np.abs(ds_dict['dic_bio_amplitude']))
+zmin = np.nanpercentile(Z,0.5)
+zmax = np.nanpercentile(Z,99.5)
+plt.figure(figsize=(8, 5),dpi=150)  # Set the figure size (width, height)
+plt.imshow(Z, cmap='plasma', interpolation='none', vmin=zmin, vmax=zmax)
+plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
+plt.title(r'Figure 6. Amplitude of DICbio umol/kg')
+plt.xticks([])
+plt.yticks([])
+plt.savefig('Fig6_map_of_DICbio_amplitude_using_fco2atm_as_fco2.png', format='png', dpi=300)
+plt.show()
+```
+![Fig6_map_of_DICbio_amplitude_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/0a4d4608-eaf4-4d40-95ac-0fb90f0951bf)
+
+Next we will make a map showing the p-values of the sine-regressions. Most of the grid cells have statistically signficant regressions (p<0.05)
+
+```
+# plot a map
+X = ds_dict['lon']
+Y = ds_dict['lat']
+Z = np.flipud(np.abs(ds_dict['dic_bio_pvalue']))
+plt.figure(figsize=(8, 5),dpi=150)  # Set the figure size (width, height)
+# Define the zero point
+vmin = 0
+vmax = 0.2
+vcenter = 0.05
+# Create a normalization instance
+norm = TwoSlopeNorm(vmin=vmin, vcenter=vcenter, vmax=vmax)
+plt.imshow(Z, cmap='seismic', interpolation='none', norm=norm)
+plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
+plt.title(r'Figure 7. p-value of DICbio sine-regressions')
+plt.xticks([])
+plt.yticks([])
+plt.savefig('Fig7_map_of_DICbio_pvalue_using_fco2atm_as_fco2.png', format='png', dpi=300)
+plt.show()
+```
+![Fig7_map_of_DICbio_pvalue_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/4e816705-bba1-4d87-a185-00e608f9da92)
+
+Next, we will make a map showing the adjusted r^2 values for the regressions in each grid cell. Note that the r^2 values tend to be greater in areas that have the largest amplitudes. In other words, the regressions are best in areas where there is the greatest biogeochemical effect in DICbio
+
+```
+# plot a map
+X = ds_dict['lon']
+Y = ds_dict['lat']
+Z = np.flipud(np.abs(ds_dict['dic_bio_adj_rsquared']))
+plt.figure(figsize=(8, 5),dpi=150)  # Set the figure size (width, height)
+# Define the zero point
+vmin = 0
+vmax = 1.0
+vcenter = 0.5
+# Create a normalization instance
+norm = TwoSlopeNorm(vmin=vmin, vcenter=vcenter, vmax=vmax)
+plt.imshow(Z, cmap='seismic_r', interpolation='none', norm=norm)
+plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
+plt.title(r'Figure 8. Adjusted R-squared of DICbio sine-regressions')
+plt.xticks([])
+plt.yticks([])
+plt.savefig('Fig8_map_of_DICbio_rsquared_using_fco2atm_as_fco2.png', format='png', dpi=300)
+plt.show()
+```
+![Fig8_map_of_DICbio_rsquared_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/bd5d36dd-8e8d-4ff4-a567-281c547cfc6f)
+
+Finally, we will show the time series of DICobs, DICatm, and DICbio at three selected locations in the coastal California Current Ecosystem near the Columbia River
+
+```
+# Columbia River location i,j coordinates
+i=249
+j=113
+# style.use('ggplot')
+fig, ax = plt.subplot_mosaic(
+    '''
+    A
+    B
+    ''',
+    figsize = (9, 9), dpi=150
+    # constrained_layout = True
+)
+# Plot at ['A']
+ax['A'].plot(ds_dict["yearfrac"], ds_dict["dic"][:,j,i], label='DICobs (OceanSODA-ETHZ)', linestyle='-', marker='')
+ax['A'].plot(ds_dict["yearfrac"], ds_dict["dic_atm"][:,j,i], label='DICatm (equilibrium with atmospheric pCO2)', linestyle='-')
+# ax['A'].set_xlabel('year')
+ax['A'].set_ylabel('DIC (umol/kg)')
+ax['A'].legend(loc='upper left')
+# ax['A'].grid(True)
+ax['A'].set_title('a. DIC observed (DICobs), and at equilibrium with atmospheric pCO2 (DICatm)')
+# ax['A'].set_xlim(2010, 2021)
+ax['A'].set_xlim(1982, 2021)
+ax['A'].set_ylim(1875, 2075)
+# ax['A'].text(1983, 36.5, 'Mean: '+f"{A_fit:.1f}"+', Amplitude: '+f"{B_fit:.1f}"+', RMSE: '+f"{rmse:.1f}"+' umol/kg',
+#         fontsize=10, color='black', ha='left', va='center')
+# ax['A'].axhline(y=0, color='k', linestyle=':')
+# Plot at ['B']
+ax['B'].plot(ds_dict["yearfrac"], ds_dict["dic_bio"][:,j,i], label='DICbio = DICobs - DICatm', color='black', linestyle='-', marker='')
+ax['B'].plot(ds_dict["yearfrac"], ds_dict["dic_bio_fit"][:,j,i], label='Regression', color='red', linestyle='--')
+# ax['A'].set_xlabel('year')
+ax['B'].set_ylabel('DICbio (umol/kg)')
+ax['B'].legend(loc='upper left')
+# ax['B'].grid(True)
+ax['B'].set_title('b. DICbio = DICobs - DICatm')
+# ax['B'].set_xlim(2010, 2021)
+ax['B'].set_xlim(1982, 2021)
+ax['B'].set_ylim(-20, 40)
+# ax['B'].text(1983, -10, 'Mean: '+f"{A_fit:.1f}"+', Amplitude: '+f"{B_fit:.1f}"+', RMSE: '+f"{rmse:.1f}"+' umol/kg',
+#         fontsize=10, color='black', ha='left', va='center')
+ax['B'].text(1983, -17.5, 'Mean: '+f"{ds_dict["dic_bio_mean"][j,i]:.1f}"+', Amplitude: '+f"{ds_dict["dic_bio_amplitude"][j,i]:.1f}"+', RMSE: '+f"{ds_dict["dic_bio_rmse"][j,i]:.1f}"+' umol/kg',
+        fontsize=10, color='black', ha='left', va='center')
+ax['B'].axhline(y=0, color='k', linestyle=':')
+fig.savefig('Fig9_DICobs_DICatm_DICbio_at_ColumbiaRiver_1982_2020_fco2atm_as_fco2.png', format='png');
+```
+![Fig9_DICobs_DICatm_DICbio_at_ColumbiaRiver_1982_2020_fco2atm_as_fco2](https://github.com/user-attachments/assets/fef6ddbb-454a-476d-a7d8-e0995b692b93)
+
+
+
+
+
+
+
+
+
+
 
 
 
