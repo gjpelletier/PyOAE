@@ -279,7 +279,7 @@ plt.show()
 
 Figure 4. Difference in ηmax, with a ∆TA perturbation of 1 umol/kg, comparing two options for the dissociation constants for carbonic acid (option 4= refit of Mehrbach 1973 by Dickson and Millero 1987, option 10= Lueker et 2000)
 
-# Example calculation of the biological compoment of DIC in the global oceans
+# Example calculation of the biological component of DIC in the global oceans
 
 The surface water DIC concentration of a given water mass is altered by air–sea gas exchange, the biological production/consumption of organic matter, and calcium carbonate (CaCO3) formation/dissolution (Burt et al, 2016). To isolate the biological component of DIC, a surface DIC concentration at atmospheric equilibrium is computed and subsequently removed from the observed DIC (DICobs). 
 
