@@ -492,7 +492,7 @@ plt.show()
 ```
 ![Fig8_map_of_DICbio_rsquared_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/bd5d36dd-8e8d-4ff4-a567-281c547cfc6f)
 
-Finally, we will show the time series of DICobs, DICatm, and DICbio at three selected locations in the coastal California Current Ecosystem near the Columbia River
+Finally, we will show the time series of DICobs, DICatm, and DICbio at a selected location in the coastal California Current Ecosystem near the Columbia River
 
 ```
 # Columbia River location i,j coordinates
