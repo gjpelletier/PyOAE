@@ -1,9 +1,9 @@
 # PyOAE
-Python tools for analysis of Ocean Alkalinity Enhancement
+Python tools for analysis of Ocean Alkalinity Enhancement and Ocean Acidification
 
 by Greg Pelletier
 
-Tools for analysis of Ocean Alkalinity Enhancement (OAE), including the following functions and examples:
+Tools for analysis of Ocean Alkalinity Enhancement (OAE) and Ocean Acidification (OA), including the following functions and examples:
 
 - **f_dTA** - Root-finding method to solve for the OAE treatment needed to restore any carbonate system variable (e.g. TA-DIC, CO3--, pH, Ωara, Ωcal) to pre-industrial conditions in the global oceans or any selected region.
 - **etamax** - Calculation of the maximum hypothetical OAE efficiency ηmax (etamax) for any assumed addition of alkalinity. The ηmax is a dimensionless quantity that is the hypothetical maximum potential CDR (umol/kg) divided by the amount of added alkalinity (umol/kg).
