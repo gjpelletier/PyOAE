@@ -26,7 +26,7 @@ if you are upgrading from a previous installation of PyOAE, enter the following 
 pip install git+https://github.com/gjpelletier/PyOAE.git --upgrade
 ```
 
-Next import the f_dTA and etamax functions as follows in your notebook or python code:<br>
+Next import the PyOAE functions as follows in your notebook or python code:<br>
 ```
 from PyOAE import f_dTA, etamax, dic_bio, sine_fit, pco2_tnorm
 ```
