@@ -23,7 +23,7 @@ pip install git+https://github.com/gjpelletier/PyOAE.git
 
 Next import the f_dTA and etamax functions as follows in your notebook or python code:<br>
 ```
-from PyOAE import f_dTA, etamax, dic_bio, sine_fit
+from PyOAE import f_dTA, etamax, dic_bio, sine_fit, pco2_tnorm
 ```
 
 As an alternative to the commands above, you can download PyOAE.py from this github repository (https://github.com/gjpelletier/PyOAE) and copy and paste the functions into your own project.<br>
