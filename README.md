@@ -410,7 +410,7 @@ for i in range(ds_dict["talk"].shape[2]):
 print('Done')
 ```
 
-Next we will make a map showing the results for the regression estimate of the mean DICbio. Positive values, shown in red, indicate that DICobs > DICatm. Negative values, shown in blue, indicate that DICobs < DICatm.
+Next we will make a map showing the results for the regression estimate of the mean DIC_bio. Positive values, shown in red, indicate that long-term mean DIC_obs > DIC_atm. Negative values, shown in blue, indicate that long-term mean DIC_obs < DIC_atm.
 
 ```
 from matplotlib.colors import TwoSlopeNorm
@@ -432,7 +432,7 @@ plt.show()
 ```
 ![Fig5_map_of_DIC_bio_mean_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/f8be6ed7-b584-4b32-899e-c134c9d2485a)
 
-Next we will make a map showing the results of the regression estimate of the amplitude of DICbio. Note that the amplitude represents half of the distance from the peak to the trough of each annual cycle. Therefore the amplitude is half of the annual range of DICbio
+Next we will make a map showing the results of the regression estimate of the amplitude of DIC_bio. Note that the amplitude represents half of the distance from the peak to the trough of each annual cycle. Therefore the amplitude is half of the annual range of DIC_bio
 
 ```
 # plot a map
@@ -476,7 +476,7 @@ plt.show()
 ```
 ![Fig7_map_of_DIC_bio_pvalue_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/d52cea00-a31b-463d-b71b-d19731c7cb1e)
 
-Next, we will make a map showing the adjusted r^2 values for the regressions in each grid cell. Note that the r^2 values tend to be greater in areas that have the largest amplitudes. In other words, the regressions are best in areas where there is the greatest biogeochemical effect in DICbio
+Next, we will make a map showing the adjusted r^2 values for the regressions in each grid cell. Note that the r^2 values tend to be greater in areas that have the largest amplitudes of DIC_bio. In other words, the regressions are best in areas where there is the greatest biogeochemical effect in DIC_bio
 
 ```
 # plot a map
