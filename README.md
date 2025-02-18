@@ -502,9 +502,8 @@ Finally, we will show the time series of DICobs, DICatm, and DICbio at a selecte
 
 ```
 # Columbia River location i,j coordinates
-i=249
-j=113
-# style.use('ggplot')
+i=234
+j=136
 fig, ax = plt.subplot_mosaic(
     '''
     A
@@ -514,38 +513,38 @@ fig, ax = plt.subplot_mosaic(
     # constrained_layout = True
 )
 # Plot at ['A']
-ax['A'].plot(ds_dict["yearfrac"], ds_dict["dic"][:,j,i], label='DICobs (OceanSODA-ETHZ)', linestyle='-', marker='')
-ax['A'].plot(ds_dict["yearfrac"], ds_dict["dic_atm"][:,j,i], label='DICatm (equilibrium with atmospheric pCO2)', linestyle='-')
+ax['A'].plot(ds_dict["yearfrac"], ds_dict["dic"][:,j,i], label='DIC_obs (OceanSODA-ETHZ)', linestyle='-', marker='')
+ax['A'].plot(ds_dict["yearfrac"], ds_dict["dic_atm"][:,j,i], label='DIC_atm (equilibrium with atmospheric pCO2)', linestyle='-')
 # ax['A'].set_xlabel('year')
 ax['A'].set_ylabel('DIC (umol/kg)')
 ax['A'].legend(loc='upper left')
 # ax['A'].grid(True)
-ax['A'].set_title('a. DIC observed (DICobs), and at equilibrium with atmospheric pCO2 (DICatm)')
+ax['A'].set_title('a. DIC observed (DIC_obs), and at equilibrium with atmospheric pCO2 (DIC_atm)')
 # ax['A'].set_xlim(2010, 2021)
 ax['A'].set_xlim(1982, 2021)
-ax['A'].set_ylim(1875, 2075)
+ax['A'].set_ylim(1850, 2085)
 # ax['A'].text(1983, 36.5, 'Mean: '+f"{A_fit:.1f}"+', Amplitude: '+f"{B_fit:.1f}"+', RMSE: '+f"{rmse:.1f}"+' umol/kg',
 #         fontsize=10, color='black', ha='left', va='center')
 # ax['A'].axhline(y=0, color='k', linestyle=':')
 # Plot at ['B']
-ax['B'].plot(ds_dict["yearfrac"], ds_dict["dic_bio"][:,j,i], label='DICbio = DICobs - DICatm', color='black', linestyle='-', marker='')
+ax['B'].plot(ds_dict["yearfrac"], ds_dict["dic_bio"][:,j,i], label='DIC_bio = DIC_obs - DIC_atm', color='black', linestyle='-', marker='')
 ax['B'].plot(ds_dict["yearfrac"], ds_dict["dic_bio_fit"][:,j,i], label='Regression', color='red', linestyle='--')
 # ax['A'].set_xlabel('year')
-ax['B'].set_ylabel('DICbio (umol/kg)')
+ax['B'].set_ylabel('DIC_bio (umol/kg)')
 ax['B'].legend(loc='upper left')
 # ax['B'].grid(True)
-ax['B'].set_title('b. DICbio = DICobs - DICatm')
+ax['B'].set_title('b. DIC_bio = DIC_obs - DIC_atm')
 # ax['B'].set_xlim(2010, 2021)
 ax['B'].set_xlim(1982, 2021)
-ax['B'].set_ylim(-20, 40)
+ax['B'].set_ylim(-35, 15)
 # ax['B'].text(1983, -10, 'Mean: '+f"{A_fit:.1f}"+', Amplitude: '+f"{B_fit:.1f}"+', RMSE: '+f"{rmse:.1f}"+' umol/kg',
 #         fontsize=10, color='black', ha='left', va='center')
-ax['B'].text(1983, -17.5, 'Mean: '+f"{ds_dict["dic_bio_mean"][j,i]:.1f}"+', Amplitude: '+f"{ds_dict["dic_bio_amplitude"][j,i]:.1f}"+', RMSE: '+f"{ds_dict["dic_bio_rmse"][j,i]:.1f}"+' umol/kg',
+ax['B'].text(1983, -32.5, 'Mean: '+f"{ds_dict["dic_bio_mean"][j,i]:.1f}"+', Amplitude: '+f"{ds_dict["dic_bio_amplitude"][j,i]:.1f}"+', RMSE: '+f"{ds_dict["dic_bio_rmse"][j,i]:.1f}"+' umol/kg',
         fontsize=10, color='black', ha='left', va='center')
 ax['B'].axhline(y=0, color='k', linestyle=':')
-fig.savefig('Fig9_DICobs_DICatm_DICbio_at_ColumbiaRiver_1982_2020_pco2atm_as_pco2.png', format='png');
+fig.savefig('Fig9_DIC_obs_atm_bio_at_ColumbiaRiver_1982_2020_fco2atm_as_fco2.png', format='png');
 ```
-![Fig9_DICobs_DICatm_DICbio_at_ColumbiaRiver_1982_2020_fco2atm_as_fco2](https://github.com/user-attachments/assets/e704f2ed-1599-4561-af29-2685aa200ad3)
+![Fig9_DIC_obs_atm_bio_at_ColumbiaRiver_1982_2020_fco2atm_as_fco2](https://github.com/user-attachments/assets/aae7b226-793b-4de7-a341-c1805501bcb4)
 
 Figure 9. DICobs, DICatm, and DICbio at a coastal location in the California Current Ecosystem near the Columbia River from 1982-2020. **a)** Observed DIC (DICobs), and the hypothetical DIC (DICatm) that would be in equilibrium with atmospheric pCO2 and observed TA. **b)** DICbio calculated from DICobs-DICatm, and the regression estimate of DICbio from the sine regression.
 
