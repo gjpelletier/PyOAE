@@ -7,8 +7,8 @@ Tools for analysis of Ocean Alkalinity Enhancement (OAE) and Ocean Acidification
 
 - **f_dTA** - Root-finding method to solve for the OAE treatment needed to restore any carbonate system variable (e.g. TA-DIC, CO3--, pH, Ωara, Ωcal) to pre-industrial conditions in the global oceans or any selected region.
 - **etamax** - Calculation of the maximum hypothetical OAE efficiency ηmax (etamax) for any assumed addition of alkalinity. The ηmax is a dimensionless quantity that is the hypothetical maximum potential CDR (umol/kg) divided by the amount of added alkalinity (umol/kg).
-- **dic_bio** - Calcuation of the biological component of DIC. The observed surface ocean DIC concentration (DICobs) is influenced by air–sea gas exchange, the biological production/consumption of organic matter, and calcium carbonate (CaCO3) formation/dissolution (Burt et al, 2016). To isolate the biological component of DIC (DICbio), a surface DIC concentration at atmospheric equilibrium (DICatm) is computed and subsequently removed from the observed DIC (DICobs), such that DICbio = DICobs - DICatm
-- **sine_fit** - A sine-regression function to model time-series of variables with regularly repeating periodic cycles (e.g. DICbio)
+- **dic_bio** - Calcuation of the biological component of DIC. The observed surface ocean DIC concentration (DIC_obs) is influenced by air–sea gas exchange, the biological production/consumption of organic matter, and calcium carbonate (CaCO3) formation/dissolution (Burt et al, 2016). To isolate the biological component of DIC (DIC_bio), a surface DIC concentration at atmospheric equilibrium (DIC_atm) is computed and subsequently removed from the observed DIC (DIC_obs), such that DIC_bio = DIC_obs - DIC_atm
+- **sine_fit** - A sine-regression function to model time-series of variables with regularly repeating periodic cycles (e.g. DIC_bio)
 - **pco2_tnorm** - Temperature-normalization of pCO2 in seawater using the equation of Takahashi (2002). In order to remove the temperature effect from the observed pCO2,
     the observed pCO2 values are normalized to the long-term mean temperature of seawater at the location.
 
@@ -287,57 +287,58 @@ Figure 4. Difference in ηmax, with a ∆TA perturbation of 1 umol/kg, comparing
 
 # Example calculation of the biological component of DIC in the global oceans
 
-The surface water DIC concentration of a given water mass is altered by air–sea gas exchange, the biological production/consumption of organic matter, and calcium carbonate (CaCO3) formation/dissolution (Burt et al, 2016). To isolate the biological component of DIC, a surface DIC concentration at atmospheric equilibrium is computed and subsequently removed from the observed DIC (DICobs). 
+The surface water DIC concentration of a given water mass is altered by air–sea gas exchange, the biological production/consumption of organic matter, and calcium carbonate (CaCO3) formation/dissolution (Burt et al, 2016). To isolate the biological component of DIC (DIC_bio), a surface DIC concentration at atmospheric equilibrium (DIC_atm) is computed, and subsequently removed from the observed DIC (DIC_obs). 
 
-We use the following equation to represent DICbio:
+We use the following equation to represent DIC_bio:
 
-DICbio = DICobs – DICatm				(eqn 1)
+DIC_bio = DIC_obs – DIC_atm				(eqn 1)
 
 
 where 
 
-- DICobs = observed DIC (OceanSODA-ETHZ)
-- DICatm = DIC at equilibrium with atmospheric pCO2 and observed TA
+- DIC_obs = observed DIC (OceanSODA-ETHZ)
+- DIC_atm = DIC at equilibrium with atmospheric pCO2 and observed TA
 
-We use the DIC reported in OceanSODA-ETHZ as the value of "DICobs" in each month at each grid
-cell from 1982-2022. Next, we calculate "DICatm" with PyCO2SYS using
-the atmospheric pCO2 from the SeaFlux data set, combined the observed
+We use the DIC reported in OceanSODA-ETHZ as the value of "DIC_obs" in each month at each grid
+cell from 1982-2022. Next, we calculate "DIC_atm" with PyCO2SYS using
+the atmospheric fCO2 from the SeaFlux data set, combined the observed
 TA from OceanSODA-ETHZ in each grid cell for each month from
-1982-2022. Therefore, "DICatm" represents the hypothetical DIC that
+1982-2022. Therefore, "DIC_atm" represents the hypothetical DIC that
 would be in equilibrium with the atmospheric pCO2. Finally, we
-calculated the 1982-2022 monthly values of "DICbio" using eqn 1 as
-DICbio = DICobs - DICatm
+calculated the 1982-2022 monthly values of "DIC_bio" using eqn 1 as
+DIC_bio = DIC_obs - DIC_atm
 
-The repeating annual cycle of DICbio can be represented as a sine function of the following form:
+The repeating annual cycle of DIC_bio can be represented as a sine function of the following form:
 
 y = mean + amplitude * sin(2π * (x - phase) / period)	(eqn 2)
 
 where 
 
-- y = DICbio = DICobs – DICatm
+- y = DIC_bio = DIC_obs – DIC_atm
 - x = time as decimal year fraction (1982-2022) 
 - mean = mean from sine-regression
 - amplitude = amplitude from sine-regression
 - phase = phase shift from sine-regression
 - period = assumed equal to 1 cycle per year
 
-PyOAE incudes functions (dic_bio and sine_fit) to calculate DICbio using eqn 1, and to find the optimum parameters of the sine-regression model in eqn 2. We solve for the best-fit values of the parameters in eqn 2 at each grid cell including the mean,
+PyOAE incudes functions (dic_bio and sine_fit) to calculate DIC_bio using eqn 1, and to find the optimum parameters of the sine-regression model in eqn 2. We solve for the best-fit values of the parameters in eqn 2 at each grid cell including the mean,
 amplitude, and phase of the sine function at each location. 
 
 In this example we use two netcdf files that we need to do the analysis, OceanSODA_ETHZ_for_PyOAE.nc and SeaFlux_for_PyOAE.nc, available to download at the following link:
 
 https://drive.google.com/drive/folders/1BGgVRk2Gf6mxNnX1Fxg0Q4GtZSAYMzef?usp=sharing
 
-We use the 1982-2022 monthly time series of DICbio as the observed "y" values in
+We use the 1982-2022 monthly time series of DIC_bio as the observed "y" values in
 eqn 2 to estimate the best-fit parameters of eqn 2 at each location.
 
 References:
 - Clargo et al 2015 (https://doi.org/10.1016/j.marchem.2015.08.010)
 - Burt et al 2016 (https://doi.org/10.1002/lno.10243):
 
-In the following code block we loop through all of the grid cells in the global oceans to do the analysis. This takes about 45 minutes to calculate the monthly DICbio in each grid cell from 1982-2022, and solve for the best fit sine-regression model in each grid cell 
+In the following code block we loop through all of the grid cells in the global oceans to do the analysis. This takes about 45 minutes to calculate the monthly DIC_bio in each grid cell from 1982-2022, and solve for the best fit sine-regression model in each grid cell 
 
 ```
+print('Computing DIC_bio, this takes about 45 minutes, please wait ...')
 import numpy as np
 import xarray as xr
 import matplotlib.pyplot as plt
@@ -406,6 +407,7 @@ for i in range(ds_dict["talk"].shape[2]):
             ds_dict["dic_bio_rmse"][j,i]= result_2["rmse"]
             ds_dict["dic_bio_adj_rsquared"][j,i]= result_2["adj_rsquared"]
             ds_dict["dic_bio_pvalue"][j,i]= result_2["pvalue"]
+print('Done')
 ```
 
 Next we will make a map showing the results for the regression estimate of the mean DICbio. Positive values, shown in red, indicate that DICobs > DICatm. Negative values, shown in blue, indicate that DICobs < DICatm.
@@ -425,10 +427,10 @@ plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
 plt.title(r'Figure 5. Mean DICbio umol/kg')
 plt.xticks([])
 plt.yticks([])
-plt.savefig('Fig5_map_of_DICbio_mean_using_pco2atm_as_pco2.png', format='png', dpi=300)
+plt.savefig('Fig5_map_of_DIC_bio_mean_using_pco2atm_as_pco2.png', format='png', dpi=300)
 plt.show()
 ```
-![Fig5_map_of_DICbio_mean_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/6f538cb7-4efd-4f38-b1e8-a1cd6921028e)
+![Fig5_map_of_DIC_bio_mean_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/f8be6ed7-b584-4b32-899e-c134c9d2485a)
 
 Next we will make a map showing the results of the regression estimate of the amplitude of DICbio. Note that the amplitude represents half of the distance from the peak to the trough of each annual cycle. Therefore the amplitude is half of the annual range of DICbio
 
@@ -445,10 +447,10 @@ plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
 plt.title(r'Figure 6. Amplitude of DICbio umol/kg')
 plt.xticks([])
 plt.yticks([])
-plt.savefig('Fig6_map_of_DICbio_amplitude_using_pco2atm_as_pco2.png', format='png', dpi=300)
+plt.savefig('Fig6_map_of_DIC_bio_amplitude_using_pco2atm_as_pco2.png', format='png', dpi=300)
 plt.show()
 ```
-![Fig6_map_of_DICbio_amplitude_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/3b3a9c10-a45d-4a83-bbd3-a8e41f594665)
+![Fig6_map_of_DIC_bio_amplitude_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/b1ab373f-e914-4494-b621-5307a7e8b007)
 
 Next we will make a map showing the p-values of the sine-regressions. Most of the grid cells have statistically signficant regressions (p<0.05) shown in blue
 
@@ -469,10 +471,10 @@ plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
 plt.title(r'Figure 7. p-value of DICbio sine-regressions')
 plt.xticks([])
 plt.yticks([])
-plt.savefig('Fig7_map_of_DICbio_pvalue_using_pco2atm_as_pco2.png', format='png', dpi=300)
+plt.savefig('Fig7_map_of_DIC_bio_pvalue_using_pco2atm_as_pco2.png', format='png', dpi=300)
 plt.show()
 ```
-![Fig7_map_of_DICbio_pvalue_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/2a120350-0cc6-4b22-9ead-ae2b0577b00e)
+![Fig7_map_of_DIC_bio_pvalue_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/d52cea00-a31b-463d-b71b-d19731c7cb1e)
 
 Next, we will make a map showing the adjusted r^2 values for the regressions in each grid cell. Note that the r^2 values tend to be greater in areas that have the largest amplitudes. In other words, the regressions are best in areas where there is the greatest biogeochemical effect in DICbio
 
@@ -493,10 +495,10 @@ plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
 plt.title(r'Figure 8. Adjusted R-squared of DICbio sine-regressions')
 plt.xticks([])
 plt.yticks([])
-plt.savefig('Fig8_map_of_DICbio_rsquared_using_pco2atm_as_pco2.png', format='png', dpi=300)
+plt.savefig('Fig8_map_of_DIC_bio_rsquared_using_pco2atm_as_pco2.png', format='png', dpi=300)
 plt.show()
 ```
-![Fig8_map_of_DICbio_rsquared_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/41805005-038d-4a66-bb81-8f89445463bf)
+![Fig8_map_of_DIC_bio_rsquared_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/f0245444-ce62-43a5-a6a1-71414bf8ea63)
 
 Finally, we will show the time series of DICobs, DICatm, and DICbio at a selected location in the coastal California Current Ecosystem near the Columbia River
 
@@ -512,6 +514,7 @@ fig, ax = plt.subplot_mosaic(
     figsize = (9, 9), dpi=150
     # constrained_layout = True
 )
+
 # Plot at ['A']
 ax['A'].plot(ds_dict["yearfrac"], ds_dict["dic"][:,j,i], label='DIC_obs (OceanSODA-ETHZ)', linestyle='-', marker='')
 ax['A'].plot(ds_dict["yearfrac"], ds_dict["dic_atm"][:,j,i], label='DIC_atm (equilibrium with atmospheric pCO2)', linestyle='-')
@@ -526,6 +529,7 @@ ax['A'].set_ylim(1850, 2085)
 # ax['A'].text(1983, 36.5, 'Mean: '+f"{A_fit:.1f}"+', Amplitude: '+f"{B_fit:.1f}"+', RMSE: '+f"{rmse:.1f}"+' umol/kg',
 #         fontsize=10, color='black', ha='left', va='center')
 # ax['A'].axhline(y=0, color='k', linestyle=':')
+
 # Plot at ['B']
 ax['B'].plot(ds_dict["yearfrac"], ds_dict["dic_bio"][:,j,i], label='DIC_bio = DIC_obs - DIC_atm', color='black', linestyle='-', marker='')
 ax['B'].plot(ds_dict["yearfrac"], ds_dict["dic_bio_fit"][:,j,i], label='Regression', color='red', linestyle='--')
@@ -542,11 +546,12 @@ ax['B'].set_ylim(-35, 15)
 ax['B'].text(1983, -32.5, 'Mean: '+f"{ds_dict["dic_bio_mean"][j,i]:.1f}"+', Amplitude: '+f"{ds_dict["dic_bio_amplitude"][j,i]:.1f}"+', RMSE: '+f"{ds_dict["dic_bio_rmse"][j,i]:.1f}"+' umol/kg',
         fontsize=10, color='black', ha='left', va='center')
 ax['B'].axhline(y=0, color='k', linestyle=':')
+
 fig.savefig('Fig9_DIC_obs_atm_bio_at_ColumbiaRiver_1982_2020_fco2atm_as_fco2.png', format='png');
 ```
-![Fig9_DIC_obs_atm_bio_at_ColumbiaRiver_1982_2020_fco2atm_as_fco2](https://github.com/user-attachments/assets/aae7b226-793b-4de7-a341-c1805501bcb4)
+![Fig9_DIC_obs_atm_bio_at_ColumbiaRiver_1982_2020_fco2atm_as_fco2](https://github.com/user-attachments/assets/f8aeaecf-998c-42b7-9244-ca427132b0d5)
 
-Figure 9. DICobs, DICatm, and DICbio at a coastal location in the California Current Ecosystem near the Columbia River from 1982-2020. **a)** Observed DIC (DICobs), and the hypothetical DIC (DICatm) that would be in equilibrium with atmospheric pCO2 and observed TA. **b)** DICbio calculated from DICobs-DICatm, and the regression estimate of DICbio from the sine regression.
+Figure 9. DIC_obs, DIC_atm, and DIC_bio at a coastal location in the California Current Ecosystem near the Columbia River from 1982-2020. **a)** Observed DIC (DIC_obs), and the hypothetical DIC (DIC_atm) that would be in equilibrium with atmospheric pCO2 and observed TA. **b)** DIC_bio calculated from DIC_obs-DIC_atm, and the regression estimate of DIC_bio from the sine regression.
 
 
 
