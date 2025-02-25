@@ -9,8 +9,7 @@ Tools for analysis of Ocean Alkalinity Enhancement (OAE) and Ocean Acidification
 - **etamax** - Calculation of the maximum hypothetical OAE efficiency ηmax (etamax) for any assumed addition of alkalinity. The ηmax is a dimensionless quantity that is the hypothetical maximum potential CDR (umol/kg) divided by the amount of added alkalinity (umol/kg).
 - **dic_bio** - Calcuation of the biological component of DIC. The observed surface ocean DIC concentration (DIC_obs) is influenced by air–sea gas exchange, the biological production/consumption of organic matter, and calcium carbonate (CaCO3) formation/dissolution (Burt et al, 2016). To isolate the biological component of DIC (DIC_bio), a surface DIC concentration at atmospheric equilibrium (DIC_atm) is computed and subsequently removed from the observed DIC (DIC_obs), such that DIC_bio = DIC_obs - DIC_atm
 - **sine_fit** - A sine-regression function to model time-series of variables with regularly repeating periodic cycles (e.g. DIC_bio)
-- **pco2_tnorm** - Temperature-normalization of pCO2 in seawater using the equation of Takahashi (2002). In order to remove the temperature effect from the observed pCO2,
-    the observed pCO2 values are normalized to the long-term mean temperature of seawater at the location.
+- **pco2_tnorm** and **pco2_fass** - Temperature-normalization of pCO2 in seawater using the equations of Takahashi (2002), or Fassbender's method as described in Rodgers et al (2022). In order to remove the temperature effect from the observed pCO2, the thermal and non-thermal compoments are estimated, including an estimate of the seasonal cycle anomaly of the thermal component.
 
 The PyOAE package requires that you have already installed numpy, scipy, and PyCO2SYS packages. We also recommend that you have installed xarray, cartopy, and matplotlib to analyze and plot maps using data from netcdf files.
 
