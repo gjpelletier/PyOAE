@@ -412,92 +412,116 @@ print('Done')
 Next we will make a map showing the results for the regression estimate of the mean DIC_bio. Positive values, shown in red, indicate that long-term mean DIC_obs > DIC_atm. Negative values, shown in blue, indicate that long-term mean DIC_obs < DIC_atm.
 
 ```
+# Robinson map of the sine-regression mean values of DIC_bio
+import cartopy.crs as ccrs
 from matplotlib.colors import TwoSlopeNorm
-# plot a map
-plt.figure(figsize=(8, 5),dpi=150)  # Set the figure size (width, height)
+plt.figure(figsize=(8, 5),dpi=150)
+X = ds_dict['lon']
+Y = ds_dict['lat']
+Z = ds_dict['dic_bio_mean']
 # Define the zero point
-vmin = np.nanpercentile(ds_dict['dic_bio_mean'],1)
-vmax = np.nanpercentile(ds_dict['dic_bio_mean'],99)
-vcenter = 0
+vmin = np.nanpercentile(Z,1)
+vmax = np.nanpercentile(Z,99)
+vcenter = 0.0
 # Create a normalization instance
 norm = TwoSlopeNorm(vmin=vmin, vcenter=vcenter, vmax=vmax)
-plt.imshow(np.flipud(ds_dict['dic_bio_mean']), cmap='seismic', interpolation='none', norm=norm)
-plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
-plt.title(r'Figure 5. Mean DICbio umol/kg')
-plt.xticks([])
-plt.yticks([])
-plt.savefig('Fig5_map_of_DIC_bio_mean_using_pco2atm_as_pco2.png', format='png', dpi=300)
+ax = plt.axes(projection=ccrs.Robinson(central_longitude=180))
+ax.set_global()
+ax.coastlines()
+# ax.gridlines()
+plt.title(r'Mean of 1982-2022 DIC_bio')
+plt.contourf(X,Y,Z,cmap='seismic',levels=256,transform=ccrs.PlateCarree(), norm=norm);
+plt.colorbar(orientation="horizontal", pad=0.03,label='Mean DIC_bio (umol/kg)',ticks=[-60,-50,-40,-30,-20,-10,0,10,20,30,40,50]);
+plt.savefig('Fig5_map_of_DIC_bio_mean_using_fco2atm_as_fco2_v2.png', format='png', dpi=300)
 plt.show()
 ```
-![Fig5_map_of_DIC_bio_mean_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/f8be6ed7-b584-4b32-899e-c134c9d2485a)
+![Fig5_map_of_DIC_bio_mean_using_fco2atm_as_fco2_v2](https://github.com/user-attachments/assets/b25339b4-be17-4744-967b-b9bab12d79e6)
+
+Figure 5. Mean DIC_bio during 1982-2022 from sine-regression
 
 Next we will make a map showing the results of the regression estimate of the amplitude of DIC_bio. Note that the amplitude represents half of the distance from the peak to the trough of each annual cycle. Therefore the amplitude is half of the annual range of DIC_bio
 
 ```
-# plot a map
+# Robinson map of the sine-regression amplitude values of DIC_bio
+import cartopy.crs as ccrs
+plt.figure(figsize=(8, 5),dpi=150)
 X = ds_dict['lon']
 Y = ds_dict['lat']
-Z = np.flipud(np.abs(ds_dict['dic_bio_amplitude']))
-zmin = np.nanpercentile(Z,0.5)
-zmax = np.nanpercentile(Z,99.5)
-plt.figure(figsize=(8, 5),dpi=150)  # Set the figure size (width, height)
-plt.imshow(Z, cmap='plasma', interpolation='none', vmin=zmin, vmax=zmax)
-plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
-plt.title(r'Figure 6. Amplitude of DICbio umol/kg')
-plt.xticks([])
-plt.yticks([])
-plt.savefig('Fig6_map_of_DIC_bio_amplitude_using_pco2atm_as_pco2.png', format='png', dpi=300)
+Z = np.abs(ds_dict["dic_bio_amplitude"])
+ax = plt.axes(projection=ccrs.Robinson(central_longitude=180))
+ax.set_global()
+ax.coastlines()
+# ax.gridlines()
+plt.title(r'Amplitude of 1982-2022 DIC_bio')
+plt.contourf(X,Y,Z,cmap='turbo',levels=256,transform=ccrs.PlateCarree());
+plt.colorbar(orientation="horizontal", pad=0.03,label='Amplitude DIC_bio (umol/kg)',ticks=[0,5,10,15,20,25,30,35,40,45,50]);
+plt.savefig('Fig6_map_of_DIC_bio_amplitude_using_fco2atm_as_fco2_v2.png', format='png', dpi=300)
 plt.show()
 ```
-![Fig6_map_of_DIC_bio_amplitude_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/b1ab373f-e914-4494-b621-5307a7e8b007)
+![Fig6_map_of_DIC_bio_amplitude_using_fco2atm_as_fco2_v2](https://github.com/user-attachments/assets/b3e271ce-bb6c-43a6-89cb-664edd5cb7ae)
+
+Figure 6. Amplitude of DIC_bio during 1982-2022 from sine-regression
 
 Next we will make a map showing the p-values of the sine-regressions. Most of the grid cells have statistically signficant regressions (p<0.05) shown in blue
 
 ```
-# plot a map
+# Robinson map of the sine-regression rsquared values of DIC_bio
+from matplotlib.colors import TwoSlopeNorm
+from matplotlib.ticker import LinearLocator
+plt.figure(figsize=(8, 5),dpi=150)
 X = ds_dict['lon']
 Y = ds_dict['lat']
-Z = np.flipud(np.abs(ds_dict['dic_bio_pvalue']))
-plt.figure(figsize=(8, 5),dpi=150)  # Set the figure size (width, height)
+Z = np.abs(ds_dict['dic_bio_pvalue'])
+Z[Z>0.1]=0.1
 # Define the zero point
 vmin = 0
-vmax = 0.2
+vmax = 0.1
 vcenter = 0.05
 # Create a normalization instance
-norm = TwoSlopeNorm(vmin=vmin, vcenter=vcenter, vmax=vmax)
-plt.imshow(Z, cmap='seismic', interpolation='none', norm=norm)
-plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
-plt.title(r'Figure 7. p-value of DICbio sine-regressions')
-plt.xticks([])
-plt.yticks([])
-plt.savefig('Fig7_map_of_DIC_bio_pvalue_using_pco2atm_as_pco2.png', format='png', dpi=300)
+norm = TwoSlopeNorm(vmin=vmin,vcenter=vcenter,vmax=vmax)
+ax = plt.axes(projection=ccrs.Robinson(central_longitude=180))
+ax.set_global()
+ax.coastlines()
+plt.title(r'p-value of 1982-2022 DIC_bio')
+plt.contourf(X,Y,Z,cmap='seismic',transform=ccrs.PlateCarree(),norm=norm,levels=256);
+cbar = plt.colorbar(orientation="horizontal", pad=0.03,label='p-value',
+                    ticks=[0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1]);
+plt.savefig('Fig7_map_of_DIC_bio_pvalue_using_fco2atm_as_fco2_v2.png', format='png', dpi=300)
 plt.show()
 ```
-![Fig7_map_of_DIC_bio_pvalue_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/d52cea00-a31b-463d-b71b-d19731c7cb1e)
+![Fig7_map_of_DIC_bio_pvalue_using_fco2atm_as_fco2_v2](https://github.com/user-attachments/assets/29674081-f0cb-4f42-8dea-c82e668a0d97)
+
+Figure 7. p-values of DIC_bio during 1982-2022 from sine-regression
 
 Next, we will make a map showing the adjusted r^2 values for the regressions in each grid cell. Note that the r^2 values tend to be greater in areas that have the largest amplitudes of DIC_bio. In other words, the regressions are best in areas where there is the greatest biogeochemical effect in DIC_bio
 
 ```
-# plot a map
+# Robinson map of the sine-regression rsquared values of DIC_bio
+from matplotlib.colors import TwoSlopeNorm
+plt.figure(figsize=(8, 5),dpi=150)
 X = ds_dict['lon']
 Y = ds_dict['lat']
-Z = np.flipud(np.abs(ds_dict['dic_bio_adj_rsquared']))
-plt.figure(figsize=(8, 5),dpi=150)  # Set the figure size (width, height)
+Z = np.abs(ds_dict['dic_bio_adj_rsquared'])
 # Define the zero point
 vmin = 0
 vmax = 1.0
 vcenter = 0.5
 # Create a normalization instance
 norm = TwoSlopeNorm(vmin=vmin, vcenter=vcenter, vmax=vmax)
-plt.imshow(Z, cmap='seismic_r', interpolation='none', norm=norm)
-plt.colorbar(orientation="horizontal", pad=0.03)  # Add a colorbar for reference
-plt.title(r'Figure 8. Adjusted R-squared of DICbio sine-regressions')
-plt.xticks([])
-plt.yticks([])
-plt.savefig('Fig8_map_of_DIC_bio_rsquared_using_pco2atm_as_pco2.png', format='png', dpi=300)
+ax = plt.axes(projection=ccrs.Robinson(central_longitude=180))
+ax.set_global()
+ax.coastlines()
+# ax.gridlines()
+plt.title(r'r-squared of 1982-2022 DIC_bio')
+plt.contourf(X,Y,Z,cmap='seismic_r',transform=ccrs.PlateCarree(), norm=norm,levels=256);
+# plt.contourf(X,Y,Z,cmap='plasma',levels=256,transform=ccrs.PlateCarree());
+plt.colorbar(orientation="horizontal", pad=0.03,label='Adjusted r-squared',ticks=[0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1]);
+plt.savefig('Fig8_map_of_DIC_bio_rsquared_using_fco2atm_as_fco2_v2.png', format='png', dpi=300)
 plt.show()
 ```
-![Fig8_map_of_DIC_bio_rsquared_using_fco2atm_as_fco2](https://github.com/user-attachments/assets/f0245444-ce62-43a5-a6a1-71414bf8ea63)
+![Fig8_map_of_DIC_bio_rsquared_using_fco2atm_as_fco2_v2](https://github.com/user-attachments/assets/de91ce0a-7e79-4750-9d13-22bf58c8d121)
+
+Figure 8. Adjusted r-squared of DIC_bio during 1982-2022 from sine-regression
 
 Finally, we will show the time series of DICobs, DICatm, and DICbio at a selected location in the coastal California Current Ecosystem near the Columbia River
 
