@@ -114,7 +114,7 @@ with multiprocessing.Pool(processes=ncpu) as pool:
 ds_dict["dTA_root"] = ds_dict_1d["dTA_root"].reshape(ds_dict["talk_1750"].shape)
 # Robinson map of the OAE needed to restore TA-DIC to pre-industrial
 import cartopy.crs as ccrs
-plt.figure(figsize=(8, 5),dpi=150)
+plt.figure(figsize=(8, 5))
 X = np.linspace(0.5, 359.5, 360)
 Y = np.linspace(-89.5, 89.5, 180)
 Z = np.abs(ds_dict["dTA_root"]).copy()
