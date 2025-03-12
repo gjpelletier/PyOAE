@@ -40,7 +40,7 @@ In this example we will use the root-finding method to solve for the amount of O
 
 The current version of f_dTA analyzes the ocean chemistry data from one grid cell at a time. Processing each grid cell takes about 1-3 seconds. To analyze all of the grid cells in a model domain, or a subset for a region of selected grid cells, we use the multi-processiong package in Python to loop through all of the grid cells that need to be evaluated, and solve for the root in each grid cell one at a time in the loop. 
 
-The following code solves for the amount of OAE needed to restore the TA-DIC to pre-industrial conditions, assuming that NaOH is used, and the CDR efficiency is 80%. This code takes about 2.5 hours to run on a laptop using 8 CPU cores:<br>
+The following code solves for and maps the amount of OAE needed to restore the TA-DIC to pre-industrial conditions, assuming that NaOH is used, and the CDR efficiency is 80%. This code takes about 2.5 hours to run on a laptop using 8 CPU cores:<br>
 ```
 # import the packages that are needed
 import scipy.optimize as opt
