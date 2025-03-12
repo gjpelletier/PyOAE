@@ -133,7 +133,7 @@ plt.colorbar(orientation="horizontal", pad=0.03,label=r'$\Delta$TA needed to res
 plt.savefig('OAE_needed_for_OA_global_NaOH_CDReff80.png', format='png', dpi=300)
 plt.show()
 ```
-![OAE_needed_for_OA_global_NaOH_CDReff80](https://github.com/user-attachments/assets/041b5651-81ce-421b-9cb5-d29191fa0d2b)
+![OAE_needed_for_OA_global_NaOH_CDReff80](https://github.com/user-attachments/assets/52e554fa-e134-4e00-b99e-74eb79af9953)
 
 Figure 1. The amount of OAE needed in the to restore the TA-DIC in 2010 to pre-industrial conditions, assuming that NaOH is used for OAE, and the CDR efficiency is 80%.
 
