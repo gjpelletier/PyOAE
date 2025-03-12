@@ -65,8 +65,8 @@ ds_dict_1d["dTA_root"] = np.full((180*360), np.nan) # init out array
 obj_var = 'alkstar'   # objective variable: 'alkstar', 'co3', phtot', 'omara', 'omcal'
 oae_type = 'NaOH'     # chemical used for OAE: 'NaOH' or 'Na2CO3'
 cdreff = 0.8          # CDR efficiency between 0-1 (e.g. 0.8 = 80%)
-x_upr = 0             # lower bound of possible dTA values (umol/kg)
-x_lwr = 500           # upper bound of possible dTA values (umol/kg)
+x_lwr = 0             # lower bound of possible dTA values (umol/kg)
+x_upr = 500           # upper bound of possible dTA values (umol/kg)
 # define the function to find the root in each grid cell i
 def find_root(i):
     chem_pi = np.full(7, np.nan)
@@ -96,7 +96,7 @@ def find_root(i):
     nnn_ctl = np.count_nonzero(~np.isnan(chem_ctl))  # number of non-nan
     if nnn_pi==7 and nnn_ctl==7:
         f_x = lambda x: f_dTA(x, **kwargs)
-        root = opt.brentq(f_x, x_upr, x_lwr)
+        root = opt.brentq(f_x, x_lwr, x_upr)
         return np.array([i,root])
 # parallel processing loop through all grid cells (takes about 2.4 hours using 6 CPUs)
 ncpu = 6   # number of CPU cores to use for parallel processing
