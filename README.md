@@ -98,8 +98,8 @@ def find_root(i):
         f_x = lambda x: f_dTA(x, **kwargs)
         root = opt.brentq(f_x, x_upr, x_lwr)
         return np.array([i,root])
-# parallel processing loop through all grid cells (takes about 2.5 hours using 8 CPUs)
-ncpu = 8   # number of CPU cores to use for parallel processing
+# parallel processing loop through all grid cells (takes about 2.4 hours using 6 CPUs)
+ncpu = 6   # number of CPU cores to use for parallel processing
 with multiprocessing.Pool(processes=ncpu) as pool:    
     # Use imap_unordered to apply the function to a range of numbers
     results = pool.imap_unordered(find_root, range(ds_dict_1d["dTA_root"].shape[0]))    
