@@ -32,6 +32,11 @@ from PyOAE import f_dTA, etamax, dic_bio, sine_fit, pco2_tnorm
 
 As an alternative to the commands above, you can download PyOAE.py from this github repository (https://github.com/gjpelletier/PyOAE) and copy and paste the functions into your own project.<br>
 
+# Geospatial Data Analysis Project
+
+The Jupyter Notebook in this repository named "PyOAE_example_root_finding_multiprocessing.ipynb" presents an application of the root-finding method, inlcuding the theoretical basis of the method, the problem statement for application, and an example of geospatial data analysis of the results.
+
+
 # Example use of the root-finding method to analyze the OAE needed to restore OA indicators to pre-industrial conditions
 
 The difference between TA and DIC, also known as Alk* (Sarmiento & Gruber, 2006), can be used as a surrogate variable to interpret the response of other carbonate system variables (e.g. CO3--, pH, Ωara, Ωcal). Ocean acidification (OA) has caused a decrease in TA-DIC since pre-industrial conditions (Sarmiento & Gruber, 2006).
