@@ -54,7 +54,7 @@ import time
 import multiprocessing
 import scipy.io
 # read the global arrays of surface ocean data and assign to a dictionary
-ds = xr.open_dataset("jiang_data_for_jupyter_v12.nc", chunks={"lon":60})
+ds = xr.open_dataset("Jiang_data_for_PyOAE.nc", chunks={"x":60})
 # copy the dask 2d arrays in ds values to numpy 2d arrays in ds_dict
 ds_dict = {var: ds[var].values for var in ds.data_vars}
 # Reshape all 2D arrays to 1D
