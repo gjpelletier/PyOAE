@@ -290,7 +290,7 @@ import xarray as xr
 import matplotlib.pyplot as plt
 from PyOAE import etamax
 # read the global arrays of surface ocean data and assign to a dictionary
-ds = xr.open_dataset("jiang_data_for_jupyter_v12.nc", chunks={"lon":0})
+ds = xr.open_dataset("Jiang_data_for_PyOAE.nc", chunks={"x":60})
 ds_dict = {var: ds[var].values for var in ds.data_vars}
 # extract the global arrays of chemistry data from the year 2010
 kwargs = dict(
@@ -346,7 +346,7 @@ import xarray as xr
 import matplotlib.pyplot as plt
 from PyOAE import etamax
 # read the global arrays of surface ocean data and assign to a dictionary
-ds = xr.open_dataset("jiang_data_for_jupyter_v12.nc", chunks={"lon":0})
+ds = xr.open_dataset("Jiang_data_for_PyOAE.nc", chunks={"x":60})
 ds_dict = {var: ds[var].values for var in ds.data_vars}
 # extract the global arrays of chemistry data from the year 2010
 kwargs_opt1 = dict(
