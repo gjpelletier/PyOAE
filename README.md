@@ -521,8 +521,8 @@ Next we will make a map showing the results for the regression estimate of the m
 import cartopy.crs as ccrs
 from matplotlib.colors import TwoSlopeNorm
 plt.figure(figsize=(8, 5))
-X = ds_dict['lon']
-Y = ds_dict['lat']
+X = ds_dict['x']
+Y = ds_dict['y']
 Z = ds_dict['dic_bio_mean']
 # Define the zero point
 vmin = np.nanpercentile(Z,1)
@@ -550,8 +550,8 @@ Next we will make a map showing the results of the regression estimate of the am
 # Robinson map of the sine-regression amplitude values of DIC_bio
 import cartopy.crs as ccrs
 plt.figure(figsize=(8, 5))
-X = ds_dict['lon']
-Y = ds_dict['lat']
+X = ds_dict['x']
+Y = ds_dict['y']
 Z = np.abs(ds_dict["dic_bio_amplitude"])
 ax = plt.axes(projection=ccrs.Robinson(central_longitude=180))
 ax.set_global()
@@ -574,8 +574,8 @@ Next we will make a map showing the p-values of the sine-regressions. Most of th
 from matplotlib.colors import TwoSlopeNorm
 from matplotlib.ticker import LinearLocator
 plt.figure(figsize=(8, 5))
-X = ds_dict['lon']
-Y = ds_dict['lat']
+X = ds_dict['x']
+Y = ds_dict['y']
 Z = np.abs(ds_dict['dic_bio_pvalue'])
 Z[Z>0.1]=0.1
 # Define the zero point
@@ -604,8 +604,8 @@ Next, we will make a map showing the adjusted r^2 values for the regressions in 
 # Robinson map of the sine-regression rsquared values of DIC_bio
 from matplotlib.colors import TwoSlopeNorm
 plt.figure(figsize=(8, 5))
-X = ds_dict['lon']
-Y = ds_dict['lat']
+X = ds_dict['x']
+Y = ds_dict['y']
 Z = np.abs(ds_dict['dic_bio_adj_rsquared'])
 # Define the zero point
 vmin = 0
