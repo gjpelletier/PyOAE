@@ -139,14 +139,14 @@ Figure 1. The amount of OAE needed in the to restore the TA-DIC in 2010 to pre-i
 
 # Example use of the etamax function to analyze the maximum hypothetical OAE efficiency in the global oceans
 
-In this example we will read global arrays of surface ocean chemistry data in 2010 from the jiang_data_for_jupyter_v12.nc file, available in this repository, calculate the global array of ηmax for the year 2010, and plot a map of the results. The Jupyter Notebooks available at this repository provide examples of additional analysis of ηmax, and citations for the sources of the ocean chemistry data provided in the example netcdf file.<br>
+In this example we will read global arrays of surface ocean chemistry data in 2010 from the Jiang_data_for_PyOAE.nc file, available in this repository, calculate the global array of ηmax for the year 2010, and plot a map of the results. The Jupyter Notebooks available at this repository provide examples of additional analysis of ηmax, and citations for the sources of the ocean chemistry data provided in the example netcdf file.<br>
 ```
 import numpy as np
 import xarray as xr
 import matplotlib.pyplot as plt
 from PyOAE import etamax
 # read the global arrays of surface ocean data and assign to a dictionary
-ds = xr.open_dataset("jiang_data_for_jupyter_v12.nc", chunks={"lon":0})
+ds = xr.open_dataset("Jiang_data_for_PyOAE.nc", chunks={"x":60})
 ds_dict = {var: ds[var].values for var in ds.data_vars}
 # extract the global arrays of chemistry data from the year 2010
 kwargs = dict(
