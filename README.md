@@ -448,14 +448,14 @@ import xarray as xr
 import matplotlib.pyplot as plt
 from PyOAE import dic_bio, sine_fit
 # read the data into an xarray dataset
-ds1 = xr.open_dataset("OceanSODA_ETHZ_for_PyOAE.nc", chunks={"lon":0})
-ds2 = xr.open_dataset("SeaFlux_for_PyOAE.nc", chunks={"lon":0})
+ds1 = xr.open_dataset("OceanSODA_ETHZ_for_PyOAE.nc", chunks={"x":60})
+ds2 = xr.open_dataset("SeaFlux_for_PyOAE.nc", chunks={"x":60})
 # Convert ds1 to dictionary of numpy arrays for computations
 ds_dict = {var: ds1[var].values for var in ds1.data_vars}
 # append yearfrac,lon,lat,time,pco2atm,fco2atm to ds_dict
 ds_dict["yearfrac"] = ds1.yearfrac.values
-ds_dict["lon"] = ds1.lon.values
-ds_dict["lat"] = ds1.lat.values
+ds_dict["x"] = ds1.x.values
+ds_dict["y"] = ds1.y.values
 ds_dict["time"] = ds1.time.values
 ds_dict["pco2atm"] = ds2.pco2atm.values
 ds_dict["fco2atm"] = ds2.fco2atm.values
@@ -463,12 +463,12 @@ ds_dict["fco2atm"] = ds2.fco2atm.values
 ds_dict["dic_atm"] = np.full_like(ds_dict["talk"], np.nan)
 ds_dict["dic_bio"] = np.full_like(ds_dict["talk"], np.nan)
 ds_dict["dic_bio_fit"] = np.full_like(ds_dict["talk"], np.nan)
-ds_dict["dic_bio_mean"] = np.full_like(ds_dict["lon"], np.nan)
-ds_dict["dic_bio_amplitude"] = np.full_like(ds_dict["lon"], np.nan)
-ds_dict["dic_bio_phase"] = np.full_like(ds_dict["lon"], np.nan)
-ds_dict["dic_bio_rmse"] = np.full_like(ds_dict["lon"], np.nan)
-ds_dict["dic_bio_adj_rsquared"] = np.full_like(ds_dict["lon"], np.nan)
-ds_dict["dic_bio_pvalue"] = np.full_like(ds_dict["lon"], np.nan)
+ds_dict["dic_bio_mean"] = np.full_like(ds_dict["area"], np.nan)
+ds_dict["dic_bio_amplitude"] = np.full_like(ds_dict["area"], np.nan)
+ds_dict["dic_bio_phase"] = np.full_like(ds_dict["area"], np.nan)
+ds_dict["dic_bio_rmse"] = np.full_like(ds_dict["area"], np.nan)
+ds_dict["dic_bio_adj_rsquared"] = np.full_like(ds_dict["area"], np.nan)
+ds_dict["dic_bio_pvalue"] = np.full_like(ds_dict["area"], np.nan)
 for i in range(ds_dict["talk"].shape[2]):
     print("dic_bio computed at lon %.1f degE" % (i+0.5))
     for j in range(ds_dict["talk"].shape[1]):
@@ -520,7 +520,7 @@ Next we will make a map showing the results for the regression estimate of the m
 # Robinson map of the sine-regression mean values of DIC_bio
 import cartopy.crs as ccrs
 from matplotlib.colors import TwoSlopeNorm
-plt.figure(figsize=(8, 5),dpi=150)
+plt.figure(figsize=(8, 5))
 X = ds_dict['lon']
 Y = ds_dict['lat']
 Z = ds_dict['dic_bio_mean']
@@ -549,7 +549,7 @@ Next we will make a map showing the results of the regression estimate of the am
 ```
 # Robinson map of the sine-regression amplitude values of DIC_bio
 import cartopy.crs as ccrs
-plt.figure(figsize=(8, 5),dpi=150)
+plt.figure(figsize=(8, 5))
 X = ds_dict['lon']
 Y = ds_dict['lat']
 Z = np.abs(ds_dict["dic_bio_amplitude"])
@@ -573,7 +573,7 @@ Next we will make a map showing the p-values of the sine-regressions. Most of th
 # Robinson map of the sine-regression rsquared values of DIC_bio
 from matplotlib.colors import TwoSlopeNorm
 from matplotlib.ticker import LinearLocator
-plt.figure(figsize=(8, 5),dpi=150)
+plt.figure(figsize=(8, 5))
 X = ds_dict['lon']
 Y = ds_dict['lat']
 Z = np.abs(ds_dict['dic_bio_pvalue'])
@@ -603,7 +603,7 @@ Next, we will make a map showing the adjusted r^2 values for the regressions in 
 ```
 # Robinson map of the sine-regression rsquared values of DIC_bio
 from matplotlib.colors import TwoSlopeNorm
-plt.figure(figsize=(8, 5),dpi=150)
+plt.figure(figsize=(8, 5))
 X = ds_dict['lon']
 Y = ds_dict['lat']
 Z = np.abs(ds_dict['dic_bio_adj_rsquared'])
@@ -639,7 +639,7 @@ fig, ax = plt.subplot_mosaic(
     A
     B
     ''',
-    figsize = (9, 9), dpi=150
+    figsize = (9, 9)
     # constrained_layout = True
 )
 
