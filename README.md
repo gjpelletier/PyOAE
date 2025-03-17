@@ -36,6 +36,107 @@ As an alternative to the commands above, you can download PyOAE.py from this git
 
 The Jupyter Notebook in this repository named "PyOAE_example_root_finding_multiprocessing.ipynb" presents an application of the root-finding method, inlcuding the theoretical basis of the method, the problem statement for application, and an example of geospatial data analysis of the results.
 
+#### *PyOAE - Geospatial analysis of the potential mitigation of ocean acidification (OA) using ocean alkalinity enhancement (OAE)*
+
+**Calculation of the amount of OAE addition of TA needed to restore current ocean conditions to pre-industrial for OA indicator variables in the global oceans**
+
+by Greg Pelletier, 16-Mar-2025
+
+This notebook presents a new method to calculate the amount of Ocean Alkalinity Enhancement (OAE) addition of total alkalinity (TA) that is needed to restore the current untreated condtions (e.g. in year 2010) to the same condition as were present in pre-industrial times (e.g. year 1750), for a selected Ocean Acidification (OA) indicator variable (e.g. TA-DIC, CO3--, Ωara, Ωcal, or pH).   
+
+**Background**
+
+Anthropogenic emissions have significantly increased the atmospheric carbon dioxide (CO2) concentration, from a pre-industrial concentration of around 278 ppm, to over 420 ppm today (Lan et al 2023). Uptake of CO2 by the ocean leads to ocean acidification (OA). OA has already resulted in negative effects on marine ecosystems and organisms, especially marine calcifiers (Bednarsek et al 2023, Cornwall et al 2024). To mitigate the negative effects of global climate change, carbon dioxide removal (CDR) strategies, including marine carbon dioxide removal (mCDR), are considered to be necessary (Lee et al 2023). One important mCDR solution is ocean alkalinity enhancement (OAE), where alkalinity is added to the ocean to increase absorbtion of CO2 from the atmosphere into the ocean. OAE involve adding alkaline substances, such as sodium hydroxide (NaOH) or sodium carbonate (Na2CO3), to the ocean.
+
+While the primary objective of OAE is to increase the uptake of CO2 from atmosphere into the ocean, a secondary benefit could be some amount of mitigation of OA. However, there is an inverse relationship between the OAE efficiency of increasing the uptake of CO2 from the atmosphere and the magntiude of possible OA mitigation.
+
+Analysis of the response of OA indicator variables may be used to evaluate the potential for mitigation of OA by OAE. The difference between TA and DIC, also known as Alk* (Sarmiento & Gruber, 2006), can be used as a surrogate variable to interpret the response of other carbonate system variables such as carbonate ion concentrations (CO3--), pH, aragonite saturation state (Ωara), and calcite saturation state (Ωcal). Each of these variables can be used to interpret the response of calcification of sensitive marine organisms to to ocean acidification (OA) and ocean alkalinity enhancement (OAE) (Xue & Cai, 2020). Ocean acidification has caused a decreases in TA-DIC, CO3--, pH, Ωara, Ωcal since pre-industrial conditions (Sarmiento & Gruber, 2006), with corresponding decrease in calcification rates and increases in dissolution of sensitive organisms (e.g. Bednarsek et al 2025). 
+
+**Problem statement**
+
+The questions we attempt to address in ths notebook are stated as follows: 
+
+- What is the quantity of OAE required to restore the recent historical OA indicators (e.g. TA-DIC, CO3--, pH, Ωara, Ωcal) to pre-industrial conditions?
+- How does the quantity of OAE needed to mitigate OA vary spatially?
+- How does the quantity of OAE needed to mitigate OA vary depending on which OA indicator variable is evaluated? 
+
+**Methods and data set**
+
+In this notebook we present a root-finding method to solve for the OAE treatment to restore any carbonate system variable (e.g. TA-DIC, CO3--, pH, Ωar, etc.) to pre-industrial conditions. The advantage of the root-finding method is that it can be used to solve for the OAE treatment required for restoration of any carbonate system variable with excellent precision. The disadvantage of the root-finding method is that it takes several hours of CPU time to solve for a water layer over the entire global ocean grid at a spatial resolution of 1$^\circ$ x 1$^\circ$.
+
+Jiang et al (2023) published a global data set of historical and predicted future values of ocean acidification indicator variables for the surface layer of the ocean between the years 1750 to 2100 (https://doi.org/10.1029/2022MS003563). We will use a subset of those data from the years 1750 and 2010 to estimate the amount of total alkalinity (TA) that would need to be added in order to restore the conditions in 2010 to pre-industrial condtions (1750). 
+
+A "root-finding method" is a mathematical technique used to determine the values of a variable (e.g. the OAE treatment ΔTA) that make a given function equal to zero, essentially finding the "root" or "zero" of that function. This is done through an iterative numerical algorithm when analytical solutions are not readily available. In this project we use Brent’s method for the numerical algorithm as implemented in the scipy optimize brentq function.
+
+The general formula for the root-finding method with brentq is as follows, as brentq tries to find a point x where fun(x) = 0 using Brent’s method:
+
+x = scipy.optimize.brentq(fun, x_lwr, x_upr)		
+
+where
+
+-  x = the root of the OAE treatment ΔTA (µmol kg-1) such that the the result of the function ‘fun’ is equal to zero
+- fun = the function that calculates the difference between the treated condition at time t (e.g. year 2010 afer hypothetical OAE treatment) compared with the pre-industrial condition (e.g. year 1750) for whichever objective variable is being evaluated (e.g. TA-DIC, CO3--, pH, Ωar).
+-  x_lwr = lower bound range of the OAE treatment ΔTA (µmol kg-1).
+-  x_upr = upper bound range of the OAE treatment ΔTA (µmol kg-1).
+
+The function ‘fun’ determines the difference between the treated condition at time t (e.g. year 2010 after hypothetical OAE treatment) compared with the pre-industrial condition (e.g. year 1750) for whichever objective variable is being evaluated (e.g. TA-DIC, CO3--, pH, Ωara, Ωcal) as follows:
+
+fun(x) = y_t,trt – y_PI	
+
+where
+
+-  y_t,trt = the value objective variable at time t (e.g. 2010) after hypothetical OAE treatment
+-  y_PI = the value of the objective variable in pre-industrial conditions (e.g. 1750)
+-  y = the carbonate system variable that is used as the objective variable (e.g. TA-DIC, CO3--, pH, Ωara, Ωcal).
+
+The function ‘fun’ performs the following calculations using a carbonate system calculator (e,g, PyCO2SYS) and the following equations:
+
+-	Calculate ΔDICtrt and ΔDICcdr from trial values of x = dTA = ΔTAtrt using the following equations:
+
+    - ΔTAtrt = dTA = x = the trial value of the hypothetical OAE treatment addition of total alkalinity (umol/kg)
+    - ΔDICtrt = direct chemical addition of DIC due to the trial value of the OAE treatment addition (umol/kg)
+    - ΔDICcdr = indirect CDR addition of DIC in response to the OAE treatment addition (umol/kg)
+    - TAt,ctl = control TA at time t before OAE treatment (umol/kg)
+    - TAt,trt = TAt,ctl + dTA = treatment TA at time t after OAE treatment (umol/kg)
+    - DICt,ctl = control DIC at time t before OAE treatment (umol/kg)
+    - DICt,trt = treatment DIC at time t after OAE treatment (umol/kg)
+    - pCO2t,ctl = control pCO2 at time t before OAE treatment (uatm)
+
+    - DICeq = CO2SYS calculation of DIC at equilibrium when input TA = TAt,trt and input pCO2 = pCO2t,ctl
+    - CDRpot = DICeq - DICt,ctl = hypothetical maximum potential CDR (umol/kg)
+    - etamax = CDRpot / dTA = hypothetical maximum OAE efficiency, typically in the range of 0.7-0.9 (Yankovsky et al 2024) (dimensionless)
+    - eta(t) = CDR / dTA = realized OAE efficiency at  time t due to the realized CDR (dimensionless)
+    - CDReff = eta(t) / etamax = realized CDR efficiency, typically in the range of 0.65-0.95 (Zhou et al 2024, Wang et al 2023) (dimensionless)  
+
+    - If NaOH is used for OAE, then the following equations apply:
+        - ΔDICtrt = 0
+        - ΔDICcdr = CDReff * etamax * dTA
+    - If Na2CO3 is used for OAE, then the following equations apply:
+        - ΔDICtrt = 0.5 * dTA
+        - ΔDICcdr = cdreff * (etamax - 0.5) * dTA
+
+-	Calculate the DICt,trt and TAt,trt at time t (2010) after OAE treatment as follows:
+    - TAt,trt = TAt,ctl + dTA
+    - DICt,trt = DICt,ctl + ΔDICtrt + ΔDICcdr
+-	Calculate yt,trt corresponding to DICt,trt and TAt,trt
+-	Calculate yPI corresponding to DICPI and TAPI
+-	Calculate fun(x) = yt,trt – yPI
+
+
+**References**
+
+- Bednaršek, N., B. R. Carter, R. M. McCabe, R. A. Feely, E. Howard, F. P. Chavez, M. Elliott, J. L. Fisher, J. Jahncke, Z. Siegrist, Pelagic calcifiers face increased mortality and habitat loss with warming and ocean acidification. Ecol. Appl. 32, e2674 (2022).
+- Bednaršek, N., H. van de Mortel, G. Pelletier, M. García-Reyes, R. A. Feely, A. G. Dickson, Assessment framework to predict sensitivity of marine calcifiers to ocean alkalinity enhancement – identification of biological thresholds and importance of precautionary principle. Biogeosciences 22, 473–498 (2025).
+- Cornwall, C.E., S. Comeau, B. P. Harvey, Are physiological and ecosystem-level tipping points caused by ocean acidification? A critical evaluation. Earth Syst. Dyn. 15, 671–687 (2024).
+- Jiang, L., J. Dunne, B. R. Carter, J. F. Tjiputra, J. Terhaar, J. D. Sharp, A. Olsen, S. Alin, D. C. E. Bakker, R. A. Feely, J. Gattuso, P. Hogan, T. Ilyina, N. Lange, S. K. Lauvset, E. R. Lewis, T. Lovato, J. Palmieri, Y. Santana‐Falcón, J. Schwinger, R. Séférian, G. Strand, N. Swart, T. Tanhua, H. Tsujino, R. Wanninkhof, M. Watanabe, A. Yamamoto, T. Ziehn, Global Surface Ocean Acidification Indicators From 1750 to 2100. J. Adv. Model. Earth Syst. 15, e2022MS003563 (2023).
+- Lan, X., P. Tans, K. Thoning, NOAA Global Monitoring Laboratory, Trends in globally-averaged CO2 determined from NOAA Global Monitoring Laboratory measurements., NOAA GML (2023); https://doi.org/10.15138/9N0H-ZH07.
+- Lee et al 2023, “IPCC, 2023: Climate Change 2023: Synthesis Report. Contribution of Working Groups I, II and III to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change [Core Writing Team, H. Lee and J. Romero (eds.)]. IPCC, Geneva, Switzerland.” (Intergovernmental Panel on Climate Change (IPCC), 2023); https://doi.org/10.59327/IPCC/AR6-9789291691647.
+- Sarmiento. J.L., N. Gruber, Ocean Biogeochemical Dynamics (Princeton University Press, 2006; https://www.jstor.org/stable/j.ctt3fgxqx).
+- Wang, H., D. J. Pilcher, K. A. Kearney, J. N. Cross, O. M. Shugart, M. D. Eisaman, B. R. Carter, Simulated Impact of Ocean Alkalinity Enhancement on Atmospheric CO2 Removal in the Bering Sea. Earths Future 11, e2022EF002816 (2023).
+- Xue, L., W.-J. Cai, Total alkalinity minus dissolved inorganic carbon as a proxy for deciphering ocean acidification mechanisms. Mar. Chem. 222, 103791 (2020).
+- Yankovsky, E., M. Zhou, M. Tyka, S. Bachman, D. Ho, A. Karspeck, M. Long, Impulse response functions as a framework for quantifying ocean-based carbon dioxide removal. EGUsphere, 1–26 (2024).
+- Zhou, M., M. D. Tyka, D. T. Ho, E. Yankovsky, S. Bachman, T. Nicholas, A. R. Karspeck, M. C. Long, Mapping the global variation in the efficiency of ocean alkalinity enhancement for carbon dioxide removal. Nat. Clim. Change, 1–7 (2024)
+
 
 # Example use of the root-finding method to analyze the OAE needed to restore OA indicators to pre-industrial conditions
 
