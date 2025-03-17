@@ -34,15 +34,13 @@ As an alternative to the commands above, you can download PyOAE.py from this git
 
 # Geospatial Data Analysis Project
 
-The Jupyter Notebook in this repository named "PyOAE_example_root_finding_multiprocessing.ipynb" presents an application of the root-finding method, inlcuding the theoretical basis of the method, the problem statement for application, and an example of geospatial data analysis of the results.
-
 #### *PyOAE - Geospatial analysis of the potential mitigation of ocean acidification (OA) using ocean alkalinity enhancement (OAE)*
 
 **Calculation of the amount of OAE addition of TA needed to restore current ocean conditions to pre-industrial for OA indicator variables in the global oceans**
 
 by Greg Pelletier, 16-Mar-2025
 
-This notebook presents a new method to calculate the amount of Ocean Alkalinity Enhancement (OAE) addition of total alkalinity (TA) that is needed to restore the current untreated condtions (e.g. in year 2010) to the same condition as were present in pre-industrial times (e.g. year 1750), for a selected Ocean Acidification (OA) indicator variable (e.g. TA-DIC, CO3--, Ωara, Ωcal, or pH).   
+The "PyOAE_example_root_finding_multiprocessing.ipynb" notebook presents a new method to calculate the amount of Ocean Alkalinity Enhancement (OAE) addition of total alkalinity (TA) that is needed to restore the current untreated condtions (e.g. in year 2010) to the same condition as were present in pre-industrial times (e.g. year 1750), for a selected Ocean Acidification (OA) indicator variable (e.g. TA-DIC, CO3--, Ωara, Ωcal, or pH).   
 
 **Background**
 
