@@ -40,7 +40,7 @@ As an alternative to the commands above, you can download PyOAE.py from this git
 
 by Greg Pelletier, 16-Mar-2025
 
-The PyOAE_example_root_finding_multiprocessing.ipynb notebook presents a new method to calculate the amount of Ocean Alkalinity Enhancement (OAE) addition of total alkalinity (TA) that is needed to restore the current untreated surface ocean condtions (e.g. in year 2010) to the same conditions that were present in pre-industrial times (e.g. year 1750), for a selected Ocean Acidification (OA) indicator variable (e.g. TA-DIC, CO3--, Ωara, Ωcal, or pH).   
+The [PyOAE_example_root_finding_multiprocessing.ipynb](https://github.com/gjpelletier/PyOAE/blob/main/PyOAE_example_root_finding_multiprocessing.ipynb) notebook presents a new method to calculate the amount of Ocean Alkalinity Enhancement (OAE) addition of total alkalinity (TA) that is needed to restore the current untreated surface ocean condtions (e.g. in year 2010) to the same conditions that were present in pre-industrial times (e.g. year 1750), for a selected Ocean Acidification (OA) indicator variable (e.g. TA-DIC, CO3--, Ωara, Ωcal, or pH).   
 
 **Background**
 
