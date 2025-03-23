@@ -11,7 +11,7 @@ Tools for analysis of Ocean Alkalinity Enhancement (OAE) and Ocean Acidification
 - **sine_fit** - A sine-regression function to model time-series of variables with periodic seasonal cycles (e.g. DIC_bio)
 - **pco2_tnorm** and **pco2_fass** - Temperature-normalization of pCO2 in seawater using the equations of Takahashi (2002), or Fassbender's method as described in Rodgers et al (2022). The thermal and non-thermal compoments of observed pCO2 are estimated, including an estimate of the seasonal cycle anomaly of the thermal component.
 
-The PyOAE package requires that you have already installed numpy, scipy, and PyCO2SYS packages. We also recommend that you have installed xarray, cartopy, and matplotlib to analyze and plot maps using data from netcdf files. We also recommend the use of the multiprocessing package to apply the root-finding method to large datasets.
+The PyOAE package requires that you have already installed numpy, scipy, and PyCO2SYS packages. We also recommend that you have installed xarray, cartopy, and matplotlib to analyze and plot maps using data from netcdf files. We also recommend the use of the multiprocessing package for analysis of large datasets.
 
 # Installation for Python or Jupyter Notebook
 
